@@ -41,8 +41,6 @@ footer {
 }
 @media screen and (max-width: 67.5rem) {
   footer {
-    margin-top: 10rem;
-
     li {
       margin-right: 3.5rem;
     }

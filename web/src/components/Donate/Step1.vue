@@ -2,7 +2,7 @@
   <div class="step1">
     <img class="avatar-img" :src="donate_info.avatar_url" alt="avatar" />
     <h4>{{donate_info.full_name}}</h4>
-    <ul class="amount-select-list">
+    <ul class="amount-select-list" ref="list">
       <li
         v-for="(item,index) in donate_info.amount_info"
         :key="index"
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+let offsetLeft = [0, 50, 162];
 export default {
   props: {
     donate_info: {
@@ -37,6 +38,7 @@ export default {
   methods: {
     toggle_amount(index) {
       this.active_amount_idx = index;
+      this.$refs.list.scrollLeft = offsetLeft[index];
     },
     calculate_amount(index) {
       let { donate_info } = this;
@@ -46,7 +48,7 @@ export default {
       let { symbol, fiats } = currency;
       if (amount.startsWith(symbol))
         amount = Number(amount.substr(symbol.length));
-      return (amount / fiats / price).toFixed(8);
+      return (amount / fiats / price).toFixed(8) + " BTC";
     }
   }
 };
@@ -57,6 +59,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .avatar-img {
@@ -175,5 +178,14 @@ p {
   line-height: 22px;
   color: #fff;
   cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+  .amount-select-list {
+    justify-content: flex-start;
+  }
+  li {
+    min-width: 90px;
+  }
 }
 </style>

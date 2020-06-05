@@ -123,7 +123,7 @@ section {
     }
 
     button {
-      margin-top: 3rem;
+      margin: 3rem 0 10rem 0;
       width: 247px;
     }
   }

@@ -58,7 +58,7 @@ function getNotJsCode() {
   let donate_id = window.sessionStorage.getItem("donate_id");
   let view_url = window.sessionStorage.getItem("view_url");
   let img = view_url;
-  let href = process.env.VUE_APP_CLIENT + "/d?id=" + donate_id;
+  let href = process.env.VUE_APP_CLIENT + "/" + donate_id;
   return `
 <a href=${href}>
   <img src=${img} />
@@ -81,8 +81,7 @@ function getNotJsCode() {
     box-sizing: border-box;
     background-color: #f8f9fb;
     line-height: 28px;
-    overflow-y: hidden;
-    overflow-x: auto;
+    overflow: hidden;
 
     code {
       font-family: Nunito;
@@ -94,9 +93,6 @@ function getNotJsCode() {
     margin-top: 35px;
     font-weight: 400;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    line-height: 24px;
 
     i {
       display: inline-block;
@@ -111,6 +107,9 @@ function getNotJsCode() {
     &.active {
       i {
         background-color: #4c4471;
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgOSA5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuODUzNTUgMy4xNDY0OUM4LjA0ODgyIDMuMzQxNzUgOC4wNDg4MiAzLjY1ODM0IDcuODUzNTUgMy44NTM2TDMuODUzNTUgNy44NTM2QzMuNjU4MjkgOC4wNDg4NiAzLjM0MTcxIDguMDQ4ODYgMy4xNDY0NSA3Ljg1MzZMMS4xNDY0NSA1Ljg1MzZDMC45NTExODQgNS42NTgzNCAwLjk1MTE4NCA1LjM0MTc1IDEuMTQ2NDUgNS4xNDY0OUMxLjM0MTcxIDQuOTUxMjMgMS42NTgyOSA0Ljk1MTIzIDEuODUzNTUgNS4xNDY0OUwzLjUgNi43OTI5NEw3LjE0NjQ1IDMuMTQ2NDlDNy4zNDE3MSAyLjk1MTIzIDcuNjU4MjkgMi45NTEyMyA3Ljg1MzU1IDMuMTQ2NDlaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K);
+        background-position: 50% 100%;
+        background-repeat: no-repeat;
       }
     }
   }

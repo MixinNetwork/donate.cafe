@@ -1,9 +1,9 @@
 <template>
   <header>
-    <div class="left">
+    <a class="left" :href="home_url">
       <img alt="Vue logo" src="@/assets/img/logo.svg" />
       <span>{{$t('home.title')}}</span>
-    </div>
+    </a>
     <div class="right">
       <img @click.stop="toggle_menus" src="@/assets/img/menus.svg" />
       <div :class="['nav-list-menus-list', show_menus && 'active']">
@@ -18,7 +18,8 @@ export default {
   name: "Header",
   data() {
     return {
-      show_menus: false
+      show_menus: false,
+      home_url: process.env.VUE_APP_CLIENT
     };
   },
   methods: {
@@ -47,81 +48,84 @@ header {
   font-family: Nunito;
   font-style: normal;
   font-weight: 600;
+}
 
-  .left {
-    display: flex;
-    align-items: center;
+.left {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
-    img {
-      margin-right: 0.56rem;
-    }
-
-    span {
-      white-space: nowrap;
-    }
+  img {
+    margin-right: 0.56rem;
+    cursor: pointer;
   }
 
-  .right {
-    img {
-      display: none;
-    }
+  span {
+    white-space: nowrap;
+    cursor: pointer;
+  }
+}
+
+.right {
+  img {
+    display: none;
   }
 }
 
 @media screen and (max-width: 67.5rem) {
   header {
     box-sizing: border-box;
+  }
 
-    .right {
-      position: relative;
+  .right {
+    position: relative;
 
-      img {
-        display: block;
-        cursor: pointer;
+    img {
+      display: block;
+      cursor: pointer;
+    }
+
+    .nav-list-menus-list {
+      display: none;
+      width: 120px;
+      position: absolute;
+      right: -13px;
+      top: 24px;
+      background: #fff;
+      box-shadow: 0px 2px 12px 0px rgba(47, 48, 50, 0.3);
+      border-radius: 6px 6px 4px 4px;
+      z-index: 10;
+
+      .nav-list-menus-item {
+        text-align: left;
+        padding-left: 24px;
+        width: 100%;
+        height: 50px;
+        font-size: 14px;
+        line-height: 46px;
+        color: #333333;
+        border-radius: 6px 6px 4px 4px;
       }
 
-      .nav-list-menus-list {
-        display: none;
-        width: 120px;
+      a {
+        margin: 0;
+      }
+
+      &::after {
+        display: block;
+        content: "";
+        width: 0;
+        height: 0;
         position: absolute;
-        right: -13px;
-        top: 24px;
-        background: #fff;
-        box-shadow: 0px 2px 12px 0px rgba(47, 48, 50, 0.3);
-        border-radius: 6px 6px 4px 4px;
-        z-index: 10;
+        top: -10px;
+        right: 18px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #fff transparent;
+      }
 
-        .nav-list-menus-item {
-          text-align: left;
-          padding-left: 24px;
-          width: 100%;
-          height: 50px;
-          font-size: 14px;
-          line-height: 46px;
-          color: #333333;
-          border-radius: 6px 6px 4px 4px;
-        }
-
-        a {
-          margin: 0;
-        }
-
-        &::after {
-          display: block;
-          content: "";
-          width: 0;
-          height: 0;
-          position: absolute;
-          top: -10px;
-          right: 18px;
-          border-width: 5px;
-          border-style: solid;
-          border-color: transparent transparent #fff transparent;
-        }
-
-        &.active {
-          display: block;
-        }
+      &.active {
+        display: block;
       }
     }
   }

@@ -258,6 +258,7 @@ canvas {
   max-width: 380px;
   word-break: break-all;
   margin-bottom: 32px;
+  color: #bbbec3;
 }
 
 .powered {
@@ -289,5 +290,14 @@ canvas {
   margin-bottom: 60px;
 
   color: #bcbec3;
+}
+
+@media screen and (max-width: 480px) {
+  .address {
+    max-width: calc(100% - 40px);
+  }
+  .powered {
+    bottom: 40px;
+  }
 }
 </style>

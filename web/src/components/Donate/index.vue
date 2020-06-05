@@ -28,8 +28,8 @@ export default {
     }
   },
   async mounted() {
-    let { query = {} } = this.$route;
-    let { id } = query;
+    let { params = {} } = this.$route;
+    let { id } = params;
     if (!id) return toHome.call(this);
     let data = await this.APIS.getDonate(id);
     if (!data) return toHome.call(this);
@@ -56,5 +56,11 @@ function toHome() {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+@media screen and (max-width: 480px) {
+  .page {
+    width: calc(100% - 20px);
+    margin-bottom: 16px;
+  }
 }
 </style>

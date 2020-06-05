@@ -10,14 +10,14 @@ const routes = [
     component: () => import('./views/Home')
   },
   {
-    path: '/d',
-    name: 'donate',
-    component: () => import('./views/Donate')
-  },
-  {
     path: '/auth',
     name: 'Auth',
     component: () => import('./views/Auth')
+  },
+  {
+    path: '/:id',
+    name: 'donate',
+    component: () => import('./views/Donate')
   },
   {
     path: '/test',
