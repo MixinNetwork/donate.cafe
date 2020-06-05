@@ -111,5 +111,122 @@ function getFile(file) {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.choose {
+  margin-top: 100px;
+  font-size: 20px;
+  transform: translate(48px);
+
+  span {
+    position: relative;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -44px;
+      width: 24px;
+      height: 24px;
+
+      border: 2px solid #4c3371;
+      border-radius: 50%;
+      transition: background-color 0.3s;
+    }
+
+    &.active {
+      &:before {
+        background-image: url("../../assets/img/select.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: #4c4471;
+      }
+    }
+
+    &:first-child {
+      margin-right: 112px;
+    }
+  }
+}
+
+.img {
+  background: #f8f9fb;
+  margin-top: 32px;
+  width: 588px;
+  height: 194px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  input {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 999;
+  }
+
+  img {
+    width: 150px;
+  }
+
+  span {
+    color: #bbbec3;
+  }
+}
+
+.choose-img {
+  overflow: hidden;
+}
+
+button {
+  display: block;
+  margin: 76px auto 16px auto;
+  width: 180px;
+}
+
+@media screen and (max-width: 67.5rem) {
+  .step1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .choose {
+    transform: initial;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5rem;
+
+    span {
+      font-size: 1.125rem;
+      margin-left: 1.5rem;
+
+      &::before {
+        width: 1.25rem;
+        height: 1.25rem;
+        left: -2rem;
+      }
+
+      &:first-child {
+        margin-right: 0;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .img {
+    max-width: 270px;
+    height: 230px;
+  }
+
+  button {
+    display: block;
+    margin: 3rem auto 1rem auto;
+  }
+}
 </style>

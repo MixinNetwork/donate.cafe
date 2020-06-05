@@ -17,7 +17,10 @@ export default {
     if (error === "access_denied") return handle_access_denied.call(this);
     const code = getUrlParameter("code");
     const resp = await this.APIS.authenticate(code);
-    if (typeof resp === "string") window.sessionStorage.setItem("data", resp);
+    if (resp && resp.donate_id) {
+      window.sessionStorage.setItem("donate_id", resp.donate_id);
+      window.sessionStorage.setItem("view_url", resp.view_url);
+    }
     this.$router.push("/");
   }
 };

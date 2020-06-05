@@ -24,6 +24,7 @@ export default {
       "3button": "Connect to Mixin Messnger",
       "3noMessenger": "No Mixin Messenger yet?",
       "4copy": "Copy Code",
+      "4noJs": "My page does not support JavaScript",
       "4success": "Copy Success",
       next: "Next"
     }

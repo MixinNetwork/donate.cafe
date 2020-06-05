@@ -25,8 +25,19 @@ export default {
     let { data } = await _mixinAxios.get('/network/assets/search/btc')
     return data.data[0].price_usd
   },
+  async checkPaid(params) {
+    let { data } = await _mixinAxios.post('/payments', params)
+    return data.data
+  },
   async getFiats() {
     return await request.get('/getFiats')
+  },
+  async getDonate(id) {
+    let params = { id, code: window.localStorage.getItem(id) }
+    let t = await request.post('/getDonate', params)
+    if (!t || !t.date) return false
+    window.localStorage.setItem(id, t.date)
+    return t
   },
   async authenticate(code) {
     let file = window.sessionStorage.getItem('file')

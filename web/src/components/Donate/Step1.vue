@@ -1,0 +1,179 @@
+<template>
+  <div class="step1">
+    <img class="avatar-img" :src="donate_info.avatar_url" alt="avatar" />
+    <h4>{{donate_info.full_name}}</h4>
+    <ul class="amount-select-list">
+      <li
+        v-for="(item,index) in donate_info.amount_info"
+        :key="index"
+        :class="active_amount_idx===index && 'active'"
+        @click="toggle_amount(index)"
+      >
+        <p>{{item.amount}}</p>
+        <p>{{calculate_amount(index)}}</p>
+        <p>{{item.label}}</p>
+      </li>
+    </ul>
+    <button @click="$emit('next',active_amount_idx)" class="next">Donate</button>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    donate_info: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
+  },
+  data() {
+    return {
+      active_amount_idx: 0,
+      btc_price: 9000
+    };
+  },
+  methods: {
+    toggle_amount(index) {
+      this.active_amount_idx = index;
+    },
+    calculate_amount(index) {
+      let { donate_info } = this;
+      let { amount_info, currency, addresses } = donate_info;
+      let { price } = addresses[0];
+      let amount = amount_info[index].amount;
+      let { symbol, fiats } = currency;
+      if (amount.startsWith(symbol))
+        amount = Number(amount.substr(symbol.length));
+      return (amount / fiats / price).toFixed(8);
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.step1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-img {
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-top: 50px;
+}
+
+h4 {
+  font-size: 20px;
+  margin-top: 8px;
+  line-height: 26px;
+  padding: 0;
+  color: #4c4471;
+}
+
+.amount-select-list {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 28px;
+  padding: 0;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+li {
+  width: 100px;
+  height: 113px;
+  padding: 21px 14px;
+  margin: 10px 8px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+
+  &:last-child::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 160px;
+    height: 1px;
+  }
+
+  &.active {
+    border: 3px solid #4c4471;
+    position: relative;
+
+    p:nth-child(1) {
+      color: #4c4471;
+    }
+
+    p::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 31px;
+      height: 31px;
+      background-image: url("https://taskwall.zeromesh.net/donate-select.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #4c4471;
+      border-radius: 8px 0px 10px;
+    }
+  }
+}
+
+p {
+  cursor: pointer;
+
+  &:nth-child(1) {
+    font-size: 20px;
+    font-weight: 600;
+    color: #3a3c3e;
+  }
+
+  &:nth-child(2) {
+    font-size: 11px;
+    line-height: 15px;
+    color: rgba(76, 68, 113, 0.5);
+    word-break: break-all;
+    margin: 4px 0 14px 0;
+  }
+
+  &:nth-child(3) {
+    font-size: 12px;
+    line-height: 16px;
+    max-height: 60px;
+    overflow: hidden;
+    color: #4c4471;
+    word-break: break-all;
+    opacity: 0.9;
+  }
+}
+
+.next {
+  margin-top: 40px;
+  width: 160px;
+  height: 40px;
+  outline: none;
+  border: 0;
+  background: #4c4471;
+  box-shadow: 0px 6px 10px rgba(75, 124, 221, 0.15);
+  border-radius: 40px;
+  font-family: Nunito;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 22px;
+  color: #fff;
+  cursor: pointer;
+}
+</style>

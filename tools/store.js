@@ -24,6 +24,7 @@ class Store {
       return this.cache_donate_list[donate_id].data
     } else {
       let dataInfo = await model.get_donate(donate_id)
+      if (!dataInfo) return false
       if (dataInfo.view_url) dataInfo.view_url = 'https://taskwall.zeromesh.net/donate.svg'
       this.cache_donate_list[donate_id] = {
         data: dataInfo,

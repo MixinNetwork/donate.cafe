@@ -28,7 +28,7 @@ class Model extends DB {
       donate_id = tools._getUUID()
       action = ADD
     }
-    res.json({ data: donate_id })
+    res.json({ data: { donate_id, view_url: view_url || 'https://taskwall.zeromesh.net/donate.svg' } })
     if (!currency || currency.length !== 3) currency = 'USD'
     await this.add_or_update_donate(action, { user_id, full_name, avatar_url, access_token, donate_id, view_url, currency, amount_info, addresses })
   }

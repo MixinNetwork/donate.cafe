@@ -24,6 +24,7 @@ export default {
       "3button": "连接到 Mixin Messenger",
       "3noMessenger": "还没有 Mixin Messenger ?",
       "4copy": "复制代码",
+      "4noJs": "我的页面不支持 JavaScript",
       "4success": "复制成功",
       next: "下一步"
     }
