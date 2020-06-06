@@ -14,7 +14,10 @@
         <p>{{item.label}}</p>
       </li>
     </ul>
-    <button @click="$emit('next',active_amount_idx)" class="next">Donate</button>
+    <button
+      @click="$emit('next',active_amount_idx)"
+      class="next"
+    >{{donate_info.currency.message[0]}}</button>
   </div>
 </template>
 

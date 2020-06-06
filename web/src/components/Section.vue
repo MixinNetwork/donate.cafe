@@ -35,7 +35,7 @@ section {
     width: 400px;
     margin-bottom: 90px;
 
-    b {
+    /deep/ b {
       color: #fd7f02;
     }
 
