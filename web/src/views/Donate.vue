@@ -3,6 +3,9 @@
     <Header />
     <Donate />
     <Footer @show_faq="change_modal(true)" />
+    <transition name="fade">
+      <Modal :show_modal="show_modal" :show_faq="show_faq" @close="change_modal(false)" />
+    </transition>
   </div>
 </template>
 
@@ -10,9 +13,10 @@
 import Header from "@/components/Header";
 import Donate from "@/components/Donate";
 import Footer from "@/components/Footer";
+import Modal from "@/components/Modal";
 
 export default {
-  components: { Header, Donate, Footer },
+  components: { Header, Donate, Footer, Modal },
 
   data() {
     return {

@@ -12,7 +12,7 @@
         <div v-if="active_step === 3" class="step3">
           <p>{{$t('home.step.3info')}}</p>
           <button @click="click_to_auth">{{$t('home.step.3button')}}</button>
-          <a href="https://mixin.one/messenger">{{$t('home.step.3noMessenger')}}</a>
+          <a target="_blank" href="https://mixin.one/messenger">{{$t('home.step.3noMessenger')}}</a>
         </div>
 
         <Step4 v-if="active_step === 4" />
@@ -113,20 +113,21 @@ export default {
   &::-webkit-scrollbar-track {
     background: transparent;
   }
+  /deep/ {
+    h3 {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #000;
+    }
 
-  h3 {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #000;
-  }
+    p {
+      margin: 10px 0px;
+      color: #000;
+    }
 
-  p {
-    margin: 10px 0px;
-    color: #000;
-  }
-
-  a {
-    color: rgb(0, 0, 204);
+    a {
+      color: rgb(0, 0, 204);
+    }
   }
 }
 

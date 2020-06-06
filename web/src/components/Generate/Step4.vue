@@ -61,7 +61,7 @@ function getNotJsCode() {
   let href = process.env.VUE_APP_CLIENT + "/" + donate_id;
   return `
 <a href=${href}>
-  <img src=${img} />
+  <img style="width:150px" src=${img} />
 </a>`;
 }
 </script>

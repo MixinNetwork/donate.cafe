@@ -18,11 +18,6 @@ const routes = [
     path: '/:id',
     name: 'donate',
     component: () => import('./views/Donate')
-  },
-  {
-    path: '/test',
-    name: 'Test',
-    component: () => import('./views/Test')
   }
 ]
 

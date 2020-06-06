@@ -38,7 +38,9 @@ export default {
   methods: {
     toggle_amount(index) {
       this.active_amount_idx = index;
-      this.$refs.list.scrollLeft = offsetLeft[index];
+      if (document.documentElement.clientWidth < 480) {
+        this.$refs.list.scrollLeft = offsetLeft[index];
+      }
     },
     calculate_amount(index) {
       let { donate_info } = this;

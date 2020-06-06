@@ -3,7 +3,7 @@
     <div class="select" @click.stop="click_select">
       <template v-if="!paid">
         {{active_asset.symbol}}
-        <img src="./trangle.svg" />
+        <img src="@/assets/img/trangle.svg" />
       </template>
       <template v-else>{{active_asset.prefix | upper}}</template>
       <ul class="select-asset-list" v-if="select_mode">
