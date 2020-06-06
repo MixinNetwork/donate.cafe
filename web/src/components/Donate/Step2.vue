@@ -19,7 +19,7 @@
     </div>
     <img :src="donate_info.addresses[active_index].icon_url" class="asset-icon" alt="icon" />
     <p class="thanks">{{donate_info.currency.message[1]}}:</p>
-    <p class="amount">{{active_amount}} ({{active_amount_token}})</p>
+    <p class="amount">{{active_amount.amount}} ({{active_amount_token}})</p>
     <template v-if="!paid">
       <canvas ref="qrcode"></canvas>
       <p class="address">{{active_asset.destination}}</p>
@@ -71,7 +71,7 @@ export default {
   computed: {
     active_amount() {
       let { donate_info, active_amount_idx } = this;
-      return donate_info.amount_info[active_amount_idx].amount;
+      return donate_info.amount_info[active_amount_idx];
     },
     active_asset() {
       let { donate_info, active_index } = this;
@@ -115,13 +115,14 @@ function resetAsset(item, index) {
   let { symbol: csymbol, fiats } = currency;
   if (!item) item = addresses[index];
   let { price, symbol, prefix, asset_id, destination } = item;
-  let amount = active_amount;
+  let amount = active_amount.amount;
   if (amount.startsWith(csymbol)) amount = amount.substr(csymbol.length);
   price = Number(price);
   let _amount = (Number(amount) / (price * fiats)).toFixed(8);
   this.active_amount_token = _amount + " " + symbol;
   let trace_id = _getUUID();
-  let memo = ("donate:" + window.location.href).substr(0, 140);
+  let label = encodeURIComponent(active_amount.label.substr(0, 40));
+  let memo = "donate:" + label;
   resetWatcher.call(this, _amount, asset_id, user_id, trace_id);
   return `${prefix}:${destination}?amount=${_amount}&asset=${asset_id}&recipient=${user_id}&trace=${trace_id}&memo=${memo}`;
 }
