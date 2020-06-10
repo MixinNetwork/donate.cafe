@@ -53,7 +53,7 @@ class Model extends Store {
   }
 
 
-  async init_user_by_code(code, file, amount_info, currency, res) {
+  async init_user_by_code(code, file, amount_info, currency) {
     let { access_token, avatar_url, error: user_error, addresses } = await this.login(code)
     if (user_error) return { error: user_error }
     let { donate_id, error: donate_error } = await this.save_donate(access_token, file, amount_info, currency, addresses)

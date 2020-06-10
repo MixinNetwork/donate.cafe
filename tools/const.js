@@ -46,5 +46,5 @@ module.exports.CURRENCY = {
 module.exports.DEFAULT_VIEW_URL = 'https://taskwall.zeromesh.net/donate.svg'
 
 module.exports.RESERVED_WORD = [
-  "view_url", "btc_price", "donate_id", "currency", "amount", "lang", "name", "token"
+  "btc_price", "donate_id", "currency", "fiats", "button", "amount", "token", "avatar_url", "name", "view_url", "file", "file_change"
 ]

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Header @open="change_modal(true, true)" />
+    <Header @open="change_modal(true, true)" :is_home="true" />
 
     <Section @open="change_modal(true, true)" />
     <Footer @show_faq="change_modal(true)" />

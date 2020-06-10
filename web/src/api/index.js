@@ -36,7 +36,7 @@ const _mixinAxios = axios.create({
   retry: 2
 })
 
-let isSaved = false
+let isSaved = true
 
 function backOff() {
   return new Promise(resolve => {
@@ -70,6 +70,7 @@ export default {
     return await request.get('/login?code=' + code)
   },
   async saveDonate() {
+    isSaved = false
     let file
     if (_vm.$ls.get('button') === 'user' && _vm.$ls.get('file_change') === 1) {
       file = _vm.$ls.get('file')

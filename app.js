@@ -46,7 +46,7 @@ app.post('/api/saveDonate', async (req, res) => {
 app.post('/api/authenticate', async (req, res) => {
   let { code, file, amount, currency } = req.body
   try {
-    let data = await model.init_user_by_code(code, file, amount, currency, res)
+    let data = await model.init_user_by_code(code, file, amount, currency)
     if (data.error) return res.json(data)
     return res.json({ data })
   } catch (e) {

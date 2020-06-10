@@ -15,7 +15,7 @@ export default {
     const resp =
       state === "login"
         ? await this.APIS.login(code)
-        : await this.APIS.authenticate(code);
+        : await this.APIS.authAndUpload(code);
     if (resp && resp.access_token) {
       let { access_token, donate_id, avatar_url } = resp;
       this.$ls.set("token", access_token);

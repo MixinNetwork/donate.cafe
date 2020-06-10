@@ -4,19 +4,27 @@
       <img alt="Vue logo" src="@/assets/img/logo.svg" />
       <span>{{$t('home.title')}}</span>
     </a>
-    <div :class="['right', avatar_url && 'avatar']">
-      <template v-if="!avatar_url">
+    <div :class="['right', isHome && avatar_url && 'avatar']">
+      <template v-if="!isHome">
         <img class="menus" @click.stop="toggle_menus" src="@/assets/img/menus.svg" />
         <div :class="['nav-list-menus-list', show_menus && 'active']">
-          <a :href="url" class="nav-list-menus-item">Log in with Mixin</a>
+          <a href="https://mixin.one/messenger" class="nav-list-menus-item">Messenger</a>
         </div>
       </template>
       <template v-else>
-        <img class="avatar" @click.stop="toggle_menus" :src="avatar_url" />
-        <div :class="['avatar-list', show_menus && 'active']">
-          <span @click="click_donate_button" class="nav-list-menus-item">Modify My Donate Button</span>
-          <span @click="click_logout" class="nav-list-menus-item">Logout</span>
-        </div>
+        <template v-if="!avatar_url">
+          <img class="menus" @click.stop="toggle_menus" src="@/assets/img/menus.svg" />
+          <div :class="['nav-list-menus-list', show_menus && 'active']">
+            <a :href="url" class="nav-list-menus-item">Log in with Mixin</a>
+          </div>
+        </template>
+        <template v-else>
+          <img class="avatar" @click.stop="toggle_menus" :src="avatar_url" />
+          <div :class="['avatar-list', show_menus && 'active']">
+            <span @click="click_donate_button" class="nav-list-menus-item">Modify My Donate Button</span>
+            <span @click="click_logout" class="nav-list-menus-item">Logout</span>
+          </div>
+        </template>
       </template>
     </div>
   </header>
@@ -30,7 +38,8 @@ export default {
       show_menus: false,
       home_url: process.env.VUE_APP_CLIENT,
       avatar_url: null,
-      url: ""
+      url: "",
+      isHome: true
     };
   },
   methods: {
@@ -55,6 +64,7 @@ export default {
     }
   },
   mounted() {
+    this.isHome = this.$route.name === "home";
     this.avatar_url = this.$ls.get("avatar_url");
     this.url = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
   }
