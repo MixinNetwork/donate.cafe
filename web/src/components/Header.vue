@@ -37,7 +37,6 @@ export default {
     toggle_menus() {
       if (!this.show_menus) {
         this.show_menus = true;
-        console.log(123);
         document.onclick = () => (this.show_menus = false);
       } else {
         this.show_menus = false;

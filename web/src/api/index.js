@@ -74,7 +74,6 @@ export default {
     if (_vm.$ls.get('button') === 'user' && _vm.$ls.get('file_change') === 1) {
       file = _vm.$ls.get('file')
     }
-    console.log(_vm.$ls.get('button'), _vm.$ls.get('file_change'), file)
     let amount = _vm.$ls.get('amount')
     let currency = _vm.$ls.get('currency')
     let params = file ? { file, amount, currency } : { amount, currency }

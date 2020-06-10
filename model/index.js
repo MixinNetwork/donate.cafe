@@ -43,14 +43,11 @@ class Model extends Store {
       action = ADD
     }
     const self = this
-    console.log(donate_id, 'push1 ----')
     uploadQueue.push(donate_id, t)
     async function t() {
-      console.log('1. start ----')
       let view_url = (file && file.startsWith('data:image/')) ? await APIS.uploadFileToUrl(file) : ''
       if (!currency || currency.length !== 3) currency = 'USD'
       await self.add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses })
-      console.log('1. end ----')
     }
     return { donate_id }
   }
@@ -68,17 +65,14 @@ class Model extends Store {
   async set_user(access_token, donate_id, name, res) {
     if (RESERVED_WORD.includes(name)) return res.json({ error: 'repeat' })
     const self = this
-    console.log(donate_id, 'push2 ----')
     uploadQueue.push(donate_id, t)
     async function t() {
-      console.log('2. start ----')
       let user = await self.get_user_by_token(access_token)
       if (!user) return { error: 'auth' }
       let { view_url } = await self.get_donate(donate_id)
       view_url = view_url || DEFAULT_VIEW_URL
       try {
         await self.update_donate_name(donate_id, name)
-        console.log('2. end ----')
         return res.json({ data: { view_url } })
       } catch (e) {
         return res.json({ error: e.message.startsWith('duplicate key value violates unique constraint') ? 'repeat' : 'server' })
