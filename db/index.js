@@ -1,71 +1,74 @@
-const pgsql = require('pg')
+const { Pool } = require('pg')
 const SQL = require('./sql')
 const { DATABASE_CONFIG } = require('../config')
 
-async function query(sql, params) {
-  const client = new pgsql.Client(DATABASE_CONFIG)
-  await client.connect()
-  const { rows } = await client.query(sql, params)
-  await client.end()
-  return rows
-}
-
-
-async function queryList(data) {
-  const client = new pgsql.Client(DATABASE_CONFIG)
-  await client.connect()
-  let res = []
-  for (let i = 0, len = data.length; i < len; i++) {
-    let { sql, params } = data[i]
-    const { rows } = await client.query(sql, params)
-    res.push(rows)
-  }
-  await client.end()
-  return res
-}
-
+const tools = require('../tools')
 
 class DB {
   constructor() {
     this.SQL = SQL
+    this.query = null
+    const pool = new Pool({ min: 1, ...DATABASE_CONFIG })
+    this.query = async (sql, params) => {
+      let client = await pool.connect()
+      try {
+        let { rows } = await client.query(sql, params)
+        return rows
+      } finally {
+        await client.release()
+      }
+    }
   }
 
   async _query(sql, params) {
-    return await query(sql, params)
+    return await this.query(sql, params)
   }
 
   // users
   async add_user({ user_id, full_name, avatar_url, access_token }) {
-    return await query(this.SQL.ADD_OR_UPDATE_USER, [user_id, full_name, avatar_url, access_token])
+    return await this.query(this.SQL.ADD_OR_UPDATE_USER, [user_id, full_name, avatar_url, access_token])
   }
 
+  async get_user_by_token(access_token) {
+    return (await this.query(this.SQL.GET_USER_BY_TOKEN, [access_token]))[0]
+  }
+
+  // donate
   async add_donate({ donate_id, user_id, view_url, currency, amount_info, addresses }) {
-    return await query(this.SQL.ADD_DONATE, [donate_id, user_id, view_url, currency, JSON.stringify(amount_info), JSON.stringify(addresses)])
+    return await this.query(this.SQL.ADD_DONATE, [donate_id, user_id, view_url, currency, JSON.stringify(amount_info), JSON.stringify(addresses)])
   }
 
-  async update_donate({ donate_id, user_id, view_url, currency, amount_info, addresses }) {
-    return await query(this.SQL.UPDATE_DONATE, [donate_id, user_id, view_url, currency, JSON.stringify(amount_info), JSON.stringify(addresses)])
+  async update_donate({ donate_id, view_url, currency, amount_info, addresses }) {
+    return view_url ?
+      await this.query(this.SQL.UPDATE_DONATE, [donate_id, view_url, currency, JSON.stringify(amount_info), JSON.stringify(addresses)]) :
+      await this.query(this.SQL.UPDATE_DONATE_WITHOUT_VIEW_URL, [donate_id, currency, JSON.stringify(amount_info), JSON.stringify(addresses)])
+  }
+
+  async update_donate_name(donate_id, name) {
+    return await this.query(this.SQL.UPDATE_DONATE_NAME, [donate_id, name])
   }
 
   async get_donate(donate_id) {
-    let t = await query(this.SQL.GET_DONATE, [donate_id])
-    return t[0]
+    return (await this.query(this.SQL.GET_DONATE, [donate_id]))[0]
+  }
+
+  async get_donate_id_by_name(name) {
+    return (await this.query(this.SQL.GET_DONATE_ID_BY_NAME, [name]))[0]
   }
 
   async get_donate_id_by_user(user_id) {
-    let t = await query(this.SQL.GET_DONATE_ID_BY_USER, [user_id])
-    return t[0] && t[0].donate_id
+    return (await this.query(this.SQL.GET_DONATE_ID_BY_USER, [user_id]))[0] || {}
   }
 
   //  statistics_daily
-  async add_statistics_daily(donate_id, url, date, { uv, click }) {
-    let t = await query(this.SQL.GET_STATISTICS_DAILY, [donate_id, url, date])
-    if (!t[0]) await query(this.SQL.ADD_STATISTICS_DAILY, [donate_id, url, date, uv, click])
+  async add_statistics_daily(donate_id, date, { uv, click }) {
+    let t = await this.query(this.SQL.GET_STATISTICS_DAILY, [donate_id, date])
+    if (!t[0]) await this.query(this.SQL.ADD_STATISTICS_DAILY, [donate_id, date, uv, click])
     else {
       let { uv: _uv, click: _click } = t[0]
       uv += _uv
       click += _click
-      await query(this.SQL.UPDATE_STATISTICS_DAILY_UV, [donate_id, url, date, uv, click])
+      await this.query(this.SQL.UPDATE_STATISTICS_DAILY_UV, [donate_id, date, uv, click])
     }
   }
 }

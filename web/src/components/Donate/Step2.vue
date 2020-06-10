@@ -51,6 +51,10 @@ export default {
     active_amount_idx: {
       type: Number,
       default: 0
+    },
+    active_asset_idx: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -96,7 +100,7 @@ export default {
     }
   },
   mounted() {
-    this.click_asset(null, 0);
+    this.click_asset(null, this.active_asset_idx);
   }
 };
 
@@ -271,6 +275,7 @@ canvas {
   height: 17px;
   color: #4c4471;
   text-decoration: none;
+  white-space: nowrap;
   img {
     margin: 0 4px;
     width: 12px;

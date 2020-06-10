@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Header />
+    <Header @open="change_modal(true, true)" />
 
     <Section @open="change_modal(true, true)" />
     <Footer @show_faq="change_modal(true)" />
@@ -32,8 +32,8 @@ export default {
   },
   async mounted() {
     window._vm = this;
-    let data = window.sessionStorage.getItem("donate_id");
-    if (data) this.show_modal = true;
+    let step4 = window.sessionStorage.getItem("step4");
+    if (step4) this.show_modal = true;
   }
 };
 </script>

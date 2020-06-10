@@ -42,3 +42,9 @@ module.exports.CURRENCY = {
   SGD: { symbol: "S$", message: ["Donate", "Thank you donating"] },
   MYR: { symbol: "RM", message: ["Donate", "Thank you donating"] },
 }
+
+module.exports.DEFAULT_VIEW_URL = 'https://taskwall.zeromesh.net/donate.svg'
+
+module.exports.RESERVED_WORD = [
+  "view_url", "btc_price", "donate_id", "currency", "amount", "lang", "name", "token"
+]

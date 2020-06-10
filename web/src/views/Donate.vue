@@ -17,7 +17,6 @@ import Modal from "@/components/Modal";
 
 export default {
   components: { Header, Donate, Footer, Modal },
-
   data() {
     return {
       show_modal: false,
@@ -25,7 +24,6 @@ export default {
       is_donate: true
     };
   },
-
   methods: {
     change_modal(status, faq_status) {
       this.show_modal = status;

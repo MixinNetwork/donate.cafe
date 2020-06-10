@@ -5,7 +5,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  mounted() {
+    window._vm = this;
+  }
+};
 </script>
 
 <style lang="scss">

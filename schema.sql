@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS donates (
   donate_id           VARCHAR(36) NOT NULL PRIMARY KEY,
   user_id             VARCHAR(1024) NOT NULL,
+  name                VARCHAR UNIQUE,
   view_url            VARCHAR(1024) NOT NULL DEFAULT '',
   currency            varchar(3) NOT NULL DEFAULT 'USD',
   amount_info         JSONB NOT NULL,
@@ -19,10 +20,9 @@ CREATE TABLE IF NOT EXISTS donates (
 
 CREATE TABLE IF NOT EXISTS statistics_daily (
   donate_id           VARCHAR(36) NOT NULL,
-  url                 VARCHAR(1024) NOT NULL,
   click               INTEGER NOT NULL DEFAULT 0,
   uv                  INTEGER NOT NULL DEFAULT 0,
   date                DATE NOT NULL DEFAULT NOW(),
-  PRIMARY KEY(donate_id, date, url)
+  PRIMARY KEY(donate_id, date)
 );
 

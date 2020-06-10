@@ -1,74 +1,127 @@
-const DB = require('../db')
+// const DB = require('../db')
 const APIS = require('../api')
 const tools = require('../tools')
-const store = require('../tools/store')
-const { ASSET_EXTRA_DATE, ASSETS, CURRENCY } = require('../tools/const')
-
+const Store = require('../tools/store')
+const { ASSET_EXTRA_DATE, ASSETS, CURRENCY, DEFAULT_VIEW_URL, RESERVED_WORD } = require('../tools/const')
+const { uploadQueue } = require('../tools/queue')
 const ADD = 0
 const EDIT = 1
 
-class Model extends DB {
+class Model extends Store {
   constructor() {
     super()
   }
 
-  async init_user_by_code(code, file, amount_info, currency, res) {
+  async login(code) {
     let authenRes = await APIS.authenticate(code)
-    if (authenRes.error && authenRes.error.code === 403) return res.json({ data: false })
-    let view_url = (file && file.startsWith('data:image/')) ? await APIS.uploadFileToUrl(file) : ''
+    if (!authenRes || [401, 403].includes(authenRes.code)) return { error: 'auth' }
     let { access_token } = authenRes
     let user = await APIS.getMe(access_token)
-    if (!user) return res.json({ data: false })
+    if (!user) return { error: 'auth' }
     let addresses = await tools.getAddress(access_token)
-    if (!addresses) return res.json({ data: false })
+    if (!addresses) return { error: 'asset' }
     let { user_id, full_name, avatar_url } = user
-    let donate_id = await this.get_donate_id_by_user(user_id)
-    let action = EDIT
-    if (!donate_id) {
-      donate_id = tools._getUUID()
-      action = ADD
-    }
-    res.json({ data: { donate_id, view_url: view_url || 'https://taskwall.zeromesh.net/donate.svg' } })
-    if (!currency || currency.length !== 3) currency = 'USD'
-    await this.add_or_update_donate(action, { user_id, full_name, avatar_url, access_token, donate_id, view_url, currency, amount_info, addresses })
+    await this.add_user({ user_id, full_name, avatar_url, access_token })
+    return { user_id, access_token, avatar_url, addresses }
   }
 
-  async get_donate_info(id, url, code) {
-    let donate_info = await store.getDonate(id)
+  async save_donate(access_token, file, amount_info, currency, addresses) {
+    let user = await this.get_user_by_token(access_token)
+    if (!user) return { error: 'auth' }
+    if (!addresses) {
+      addresses = await tools.getAddress(access_token)
+      if (!addresses) return { error: 'asset' }
+    }
+    let { user_id } = user
+    let { donate_id } = await this.get_donate_id_by_user(user_id)
+    let action = EDIT
+    if (!donate_id) {
+      while (true) {
+        donate_id = tools._getUUID()
+        if (!(await this.get_donate(donate_id))) break
+      }
+      action = ADD
+    }
+    const self = this
+    console.log(donate_id, 'push1 ----')
+    uploadQueue.push(donate_id, t)
+    async function t() {
+      console.log('1. start ----')
+      let view_url = (file && file.startsWith('data:image/')) ? await APIS.uploadFileToUrl(file) : ''
+      if (!currency || currency.length !== 3) currency = 'USD'
+      await self.add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses })
+      console.log('1. end ----')
+    }
+    return { donate_id }
+  }
+
+
+  async init_user_by_code(code, file, amount_info, currency, res) {
+    let { access_token, avatar_url, error: user_error, addresses } = await this.login(code)
+    if (user_error) return { error: user_error }
+    let { donate_id, error: donate_error } = await this.save_donate(access_token, file, amount_info, currency, addresses)
+    if (donate_error) return { error: donate_error }
+    return { access_token, donate_id, avatar_url }
+  }
+
+
+  async set_user(access_token, donate_id, name, res) {
+    if (RESERVED_WORD.includes(name)) return res.json({ error: 'repeat' })
+    const self = this
+    console.log(donate_id, 'push2 ----')
+    uploadQueue.push(donate_id, t)
+    async function t() {
+      console.log('2. start ----')
+      let user = await self.get_user_by_token(access_token)
+      if (!user) return { error: 'auth' }
+      let { view_url } = await self.get_donate(donate_id)
+      view_url = view_url || DEFAULT_VIEW_URL
+      try {
+        await self.update_donate_name(donate_id, name)
+        console.log('2. end ----')
+        return res.json({ data: { view_url } })
+      } catch (e) {
+        return res.json({ error: e.message.startsWith('duplicate key value violates unique constraint') ? 'repeat' : 'server' })
+      }
+    }
+  }
+
+  async get_donate_info({ name, id, url, code }) {
+    let donate_info = name ? await this.getDonateByName(name) : await this.getDonate(id)
     if (!donate_info) return false
     let tmpObj = {}
     Object.assign(tmpObj, donate_info)
     tmpObj.addresses = tmpObj.addresses.map((item, i) => (
-      { destination: item, price: store.price_list[i], asset_id: ASSETS[i], ...ASSET_EXTRA_DATE[i] }
+      { destination: item, price: this.price_list[i], asset_id: ASSETS[i], ...ASSET_EXTRA_DATE[i] }
     ))
-    let currency = { fiats: store.fiat_list[tmpObj.currency], ...CURRENCY[tmpObj.currency] }
-    delete tmpObj.currency
+    let currency = { fiats: this.fiat_list[tmpObj.currency], ...CURRENCY[tmpObj.currency] }
     let date = new Date().toISOString().slice(0, 10)
-    if (code !== date) store.updateUV(id, url, date)
-    return { date, currency, ...tmpObj }
-  }
-
-  async update_click(donate_id, url, date) {
-    store.updateClick(donate_id, url, date)
+    console.log(url, tools.getEnv().client_host)
+    console.log(url.startsWith(tools.getEnv().client_host))
+    if (code !== date) {
+      url.startsWith(tools.getEnv().client_host) ?
+        this.updateClick(donate_info.donate_id, date) :
+        this.updateUV(donate_info.donate_id, date)
+    }
+    return { date, ...tmpObj, currency }
   }
 
   get_fiats() {
-    return store.fiat_list
+    return this.fiat_list
   }
 
-  async add_or_update_donate(action, { user_id, full_name, avatar_url, access_token, donate_id, view_url, currency, amount_info, addresses }) {
-    await this.add_user({ user_id, full_name, avatar_url, access_token })
+  async add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses }) {
     amount_info = amount_info || {}
     switch (action) {
       case ADD:
-        await this.add_donate({ donate_id, user_id, view_url, currency, amount_info, addresses });
-        break
+        return await this.add_donate({ donate_id, user_id, view_url, currency, amount_info, addresses });
       case EDIT:
-        await this.update_donate({ donate_id, user_id, view_url, currency, amount_info, addresses });
-        store.cache_donate_list[donate_id] && (store.cache_donate_list[donate_id].updated = true)
+        await this.update_donate({ donate_id, view_url, currency, amount_info, addresses })
+        this.cache_donate_list[donate_id] && (this.cache_donate_list[donate_id].updated = true)
         break
     }
   }
+
 
   async test({ user_id, full_name, phone }) {
     return await this.add_user({ user_id, full_name, phone })
