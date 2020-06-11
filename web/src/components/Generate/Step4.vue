@@ -1,8 +1,8 @@
 <template>
   <div class="step4">
-    <input type="text" placeholder="username" @input="prefix_input" v-model="name"/>
+    <input type="text" placeholder="username" @input="prefix_input" v-model="name" />
     <p v-html="url"></p>
-    <button :class="!name && 'not-allow'" @click="click_next">Next</button>
+    <button :class="name.length<5 && 'not-allow'" @click="click_next">Next</button>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
         this.once_click = false;
         return this.$message(this.$t("error.name_empty"));
       }
-      if (this.name.length <= 5) {
+      if (this.name.length < 5) {
         this.once_click = false;
         return this.$message(this.$t("error.name_length"));
       }

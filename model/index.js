@@ -71,7 +71,7 @@ class Model extends Store {
 
   async set_user(access_token, donate_id, name, res) {
     if (RESERVED_WORD.includes(name)) return res.json({ error: 'name_repeat' })
-    if (name.length <= 5) return res.json({ error: 'name_length' })
+    if (name.length < 5) return res.json({ error: 'name_length' })
     const self = this
     uploadQueue.push(donate_id, t)
     async function t() {
