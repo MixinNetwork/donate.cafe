@@ -45,7 +45,14 @@ class Model extends Store {
     const self = this
     uploadQueue.push(donate_id, t)
     async function t() {
-      let view_url = (file && file.startsWith('data:image/')) ? await APIS.uploadFileToUrl(file) : ''
+      let view_url
+      if (file && file.startsWith('data:image/')) {
+        view_url = await APIS.uploadFileToUrl(file)
+      } else if (file === 'default') {
+        view_url = DEFAULT_VIEW_URL
+      } else {
+        view_url = ''
+      }
       if (!currency || currency.length !== 3) currency = 'USD'
       await self.add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses })
     }
@@ -63,7 +70,8 @@ class Model extends Store {
 
 
   async set_user(access_token, donate_id, name, res) {
-    if (RESERVED_WORD.includes(name)) return res.json({ error: 'repeat' })
+    if (RESERVED_WORD.includes(name)) return res.json({ error: 'name_repeat' })
+    if (name.length <= 5) return res.json({ error: 'name_length' })
     const self = this
     uploadQueue.push(donate_id, t)
     async function t() {
@@ -75,7 +83,7 @@ class Model extends Store {
         await self.update_donate_name(donate_id, name)
         return res.json({ data: { view_url } })
       } catch (e) {
-        return res.json({ error: e.message.startsWith('duplicate key value violates unique constraint') ? 'repeat' : 'server' })
+        return res.json({ error: e.message.startsWith('duplicate key value violates unique constraint') ? 'name_repeat' : 'server' })
       }
     }
   }

@@ -44,7 +44,6 @@ export default {
 
   justify-content: space-between;
   align-items: center;
-  background-image: url("../assets/img/bg.png");
-  background-color: #edeeee;
+  background-image: url("../assets/img/donate_bg.jpg");
 }
 </style>

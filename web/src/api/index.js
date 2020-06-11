@@ -56,6 +56,10 @@ export default {
     let { data } = await _mixinAxios.post('/payments', params)
     return data.data
   },
+  async checkExternalPaid(params) {
+    let { data } = await _mixinAxios.get('/external/transactions', { params })
+    return data.data
+  },
   async getFiats() {
     return await request.get('/getFiats')
   },
@@ -72,8 +76,15 @@ export default {
   async saveDonate() {
     isSaved = false
     let file
-    if (_vm.$ls.get('button') === 'user' && _vm.$ls.get('file_change') === 1) {
-      file = _vm.$ls.get('file')
+    if (_vm.$ls.get('file_change') === 1) {
+      let button = _vm.$ls.get('button')
+      if (button === 'default') {
+        file = 'default'
+      } else if (button === 'user') {
+        file = _vm.$ls.get('file')
+      }
+    } else {
+      file = ''
     }
     let amount = _vm.$ls.get('amount')
     let currency = _vm.$ls.get('currency')

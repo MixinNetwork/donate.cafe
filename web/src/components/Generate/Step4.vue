@@ -1,6 +1,6 @@
 <template>
   <div class="step4">
-    <input type="text" placeholder="Username" v-model="name" />
+    <input type="text" placeholder="username" @input="prefix_input" v-model="name"/>
     <p v-html="url"></p>
     <button :class="!name && 'not-allow'" @click="click_next">Next</button>
   </div>
@@ -26,16 +26,20 @@ export default {
     }
   },
   methods: {
+    prefix_input(e) {
+      let value = e.target.value.replace(/[^(a-zA-Z0-9\_\-)]/g, "");
+      this.name = value;
+    },
     async click_next() {
       if (this.once_click) return this.$message(this.$t("message.imgloading"));
       this.once_click = true;
       if (!this.name) {
         this.once_click = false;
-        return this.$message(this.$t("error.user"));
+        return this.$message(this.$t("error.name_empty"));
       }
-      if (!this.$ls.get("donate_id")) {
+      if (this.name.length <= 5) {
         this.once_click = false;
-        return this.$message(this.$t("error.user"));
+        return this.$message(this.$t("error.name_length"));
       }
       this.$nextTick(async () => {
         let { view_url } = await this.APIS.setUsername(this.name);

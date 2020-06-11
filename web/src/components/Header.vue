@@ -2,7 +2,7 @@
   <header>
     <a class="left" :href="home_url">
       <img alt="Vue logo" src="@/assets/img/logo.svg" />
-      <span>{{$t('home.title')}}</span>
+      <span>{{$t('header.title')}}</span>
     </a>
     <div :class="['right', isHome && avatar_url && 'avatar']">
       <template v-if="!isHome">
@@ -15,14 +15,14 @@
         <template v-if="!avatar_url">
           <img class="menus" @click.stop="toggle_menus" src="@/assets/img/menus.svg" />
           <div :class="['nav-list-menus-list', show_menus && 'active']">
-            <a :href="url" class="nav-list-menus-item">Log in with Mixin</a>
+            <a :href="url" class="nav-list-menus-item">{{$t('header.login')}}</a>
           </div>
         </template>
         <template v-else>
           <img class="avatar" @click.stop="toggle_menus" :src="avatar_url" />
           <div :class="['avatar-list', show_menus && 'active']">
-            <span @click="click_donate_button" class="nav-list-menus-item">Modify My Donate Button</span>
-            <span @click="click_logout" class="nav-list-menus-item">Logout</span>
+            <span @click="click_donate_button" class="nav-list-menus-item">{{$t('header.modify')}}</span>
+            <span @click="click_logout" class="nav-list-menus-item">{{$t('header.logout')}}</span>
           </div>
         </template>
       </template>
@@ -143,16 +143,12 @@ header {
     display: block;
     text-align: left;
     padding-right: 20px;
+  cursor: pointer;
     margin-left: 20px;
     font-size: 12px;
     line-height: 40px;
     color: #333333;
     border-radius: 6px 6px 4px 4px;
-    border-bottom: 1px solid #f2f2f2;
-    cursor: pointer;
-    &:last-child {
-      border: 0;
-    }
   }
 
   a {
@@ -209,11 +205,6 @@ header {
       line-height: 40px;
       color: #333333;
       border-radius: 6px 6px 4px 4px;
-      border-bottom: 1px solid #f2f2f2;
-      cursor: pointer;
-      &:last-child {
-        border: 0;
-      }
     }
 
     a {

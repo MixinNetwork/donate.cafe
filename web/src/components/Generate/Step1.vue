@@ -49,14 +49,16 @@ export default {
       this.button_mode_default = mode;
     },
     click_next() {
-      let { button_mode_default, file } = this;
-      if (!button_mode_default && file) {
-        this.$ls.set("button", "user");
+      let { button_mode_default: button, file } = this;
+      if (!button && file) {
         let oldFile = this.$ls.get("file");
+        let oldButton = this.$ls.get("button");
+        this.$ls.set("button", "user");
         this.$ls.set("file", file);
-        oldFile !== file && this.$ls.set("file_change", "1");
+        (oldFile !== file || oldButton !== button) &&
+          this.$ls.set("file_change", "1");
       } else {
-        this.$ls.set("button", "");
+        this.$ls.set("button", "default");
       }
       this.$emit("nextStep");
     },

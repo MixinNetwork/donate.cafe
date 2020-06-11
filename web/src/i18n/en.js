@@ -1,4 +1,10 @@
 export default {
+  header: {
+    title: "Mixin Donate",
+    login: "Log in with Mixin Messenger",
+    logout: "Logout",
+    modify: "Modify My Donate Button"
+  },
   home: {
     title: "Mixin Donate",
     desc: "Accept <b>Bitcoin</b> Donate Now",
@@ -35,8 +41,10 @@ export default {
     auth: "Authentication Failed",
     asset: "Asset Authentication Failed",
     server: "Server Error",
-    repeat: "Username Already Exists",
-    user: "Username Can Not Be Empty",
+    name_repeat: "Username Already Exists",
+    name_empty: "Username Can Not Be Empty",
+    name_length: "Name Length Is At Least 5",
+
   },
   message: {
     imgloading: 'Image Uploading...'

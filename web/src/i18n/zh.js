@@ -1,6 +1,11 @@
 export default {
-  home: {
+  header: {
     title: "Mixin Donate",
+    login: "用 Mixin Messenger 登陆",
+    logout: "登出",
+    modify: "修改我的捐赠按钮"
+  },
+  home: {
     desc: "接受 <b>Bitcoin</b> 捐赠从这里开始",
     props: [
       "快速 - 几分钟即可上线，而不是几天",
@@ -36,8 +41,9 @@ export default {
     auth: "认证失败",
     asset: "资产认证失败",
     server: "服务器错误",
-    repeat: "用户名已存在",
-    user: "用户名不能为空",
+    name_repeat: "用户名已存在",
+    name_empty: "用户名不能为空",
+    name_length: "名称长度至少为 5",
   },
   message: {
     imgloading: '图片上传中...'
