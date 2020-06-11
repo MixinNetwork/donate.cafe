@@ -8,17 +8,14 @@ class DB {
     this.SQL = SQL
     this.query = null
     const pool = new Pool(DATABASE_CONFIG)
-    this.query = (sql, params) => {
-      return new Promise((resolve, reject) => {
-        pool.connect((err, client, done) => {
-          if (err) reject(err)
-          client.query(sql, params, (err, result) => {
-            done()
-            if (err) reject(err)
-            resolve(result.rows)
-          })
-        })
-      })
+    this.query = async (sql, params) => {
+      let client = await pool.connect()
+      try {
+        let { rows } = await client.query(sql, params)
+        return rows
+      } finally {
+        await client.release()
+      }
     }
   }
 
