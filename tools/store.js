@@ -64,7 +64,6 @@ class Store extends DB {
       this.cache_statistics_daily = {}
       for (let donate_id in _cache_statistics) {
         for (let date in _cache_statistics[donate_id]) {
-          console.log(donate_id, date, _cache_statistics[donate_id][date])
           await this.add_statistics_daily(donate_id, date, _cache_statistics[donate_id][date])
         }
       }

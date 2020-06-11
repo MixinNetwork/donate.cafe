@@ -157,7 +157,6 @@ function resetWatcher(params, destination) {
 }
 
 function resetTimer(params) {
-  console.log(this.timer);
   if (this.timer) {
     clearInterval(this.timer);
   }

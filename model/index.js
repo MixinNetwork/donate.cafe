@@ -98,8 +98,6 @@ class Model extends Store {
     ))
     let currency = { fiats: this.fiat_list[tmpObj.currency], ...CURRENCY[tmpObj.currency] }
     let date = new Date().toISOString().slice(0, 10)
-    console.log(url, tools.getEnv().client_host)
-    console.log(url.startsWith(tools.getEnv().client_host))
     if (code !== date) {
       url.startsWith(tools.getEnv().client_host) ?
         this.updateClick(donate_info.donate_id, date) :
