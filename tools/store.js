@@ -1,6 +1,6 @@
 const DB = require('../db')
 const APIS = require('../api')
-const { ASSETS, DEFAULT_VIEW_URL } = require('../tools/const')
+const { ASSETS, DEFAULT_VIEW_URL, CACHE_TIME } = require('../tools/const')
 
 class Store extends DB {
   constructor() {
@@ -67,14 +67,14 @@ class Store extends DB {
           await this.add_statistics_daily(donate_id, date, _cache_statistics[donate_id][date])
         }
       }
-    }, 1000 * 5)
+    }, CACHE_TIME.update_uv_and_click)
   }
 
   async updateAssetsPrice() {
     this._updateAssetsPrice()
     setInterval(async () => {
       this._updateAssetsPrice()
-    }, 1000 * 60 * 5)
+    }, CACHE_TIME.asset)
   }
 
   async _updateAssetsPrice() {
@@ -92,7 +92,7 @@ class Store extends DB {
     this._updateFiats()
     setInterval(() => {
       this._updateFiats()
-    }, 1000 * 60 * 5)
+    }, CACHE_TIME.fiats)
   }
 
   async _updateFiats() {
@@ -110,7 +110,7 @@ function clearCache(list, key) {
   if (list[key].timmer) clearTimeout(list[key].timer)
   list[key].timmer = setTimeout(() => {
     delete list[key]
-  }, 1000 * 1);
+  }, CACHE_TIME.donate_info);
 }
 
 module.exports = Store
