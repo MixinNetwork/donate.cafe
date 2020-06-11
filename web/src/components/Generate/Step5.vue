@@ -63,7 +63,7 @@ function getJsCode(resp) {
      data-button-id="${donate_id}"
 ></div>
 <!-- This line can go anywhere -->
-<script src="https://taskwall.zeromesh.net/donate.js?t=${Number(
+<script src="https://donate.cafe/donate.js?t=${Number(
     new Date()
   )}"><\/script>`;
 }
