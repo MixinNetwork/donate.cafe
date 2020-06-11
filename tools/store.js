@@ -1,59 +1,60 @@
 const DB = require('../db')
-const model = new DB()
 const APIS = require('../api')
-const { ASSETS } = require('../tools/const')
+const { ASSETS, DEFAULT_VIEW_URL, CACHE_TIME } = require('../tools/const')
 
-class Store {
+class Store extends DB {
   constructor() {
+    super()
     this.price_list = []
     this.cache_donate_list = {}
     this.cache_statistics_daily = {}
     this.fiat_list = {}
+    this.nameMap = {}
     this.save_timer = null
     this.updateStatisticsToDatabase()
     this.updateAssetsPrice()
     this.updateFiats()
   }
 
+  async getDonateByName(name) {
+    if (!this.nameMap[name] || this.nameMap[name].updated) {
+      let donate = await this.get_donate_id_by_name(name)
+      if (!donate) return false
+      this.nameMap[name] = { data: donate.donate_id, timer: null }
+    }
+    clearCache(this.nameMap, name)
+    return this.getDonate(this.nameMap[name].data)
+  }
+
   async getDonate(donate_id) {
-    if (this.cache_donate_list[donate_id] && !this.cache_donate_list[donate_id].updated) {
-      clearTimeout(this.cache_donate_list[donate_id].timer)
-      this.cache_donate_list[donate_id].timer = setTimeout(() => {
-        delete this.cache_donate_list[donate_id]
-      }, 1000 * 60 * 10)
-      return this.cache_donate_list[donate_id].data
-    } else {
-      let dataInfo = await model.get_donate(donate_id)
+    if (!this.cache_donate_list[donate_id] || this.cache_donate_list[donate_id].updated) {
+      let dataInfo = await this.get_donate(donate_id)
       if (!dataInfo) return false
-      if (!dataInfo.view_url) dataInfo.view_url = 'https://taskwall.zeromesh.net/donate.svg'
+      if (!dataInfo.view_url) dataInfo.view_url = DEFAULT_VIEW_URL
       this.cache_donate_list[donate_id] = {
         data: dataInfo,
         timer: null
       }
-      this.cache_donate_list[donate_id].timer = setTimeout(() => {
-        delete this.cache_donate_list[donate_id]
-      }, 1000 * 60 * 10)
-      return dataInfo
     }
+    clearCache(this.cache_donate_list, donate_id)
+    return this.cache_donate_list[donate_id].data
   }
 
-  async updateClick(donate_id, url, date) {
-    this.initStatistics(donate_id, url, date)
-    this.cache_statistics_daily[donate_id][url][date].click++
+  async updateClick(donate_id, date) {
+    this.initStatistics(donate_id, date)
+    this.cache_statistics_daily[donate_id][date].click++
   }
 
-  async updateUV(donate_id, url, date) {
-    this.initStatistics(donate_id, url, date)
-    this.cache_statistics_daily[donate_id][url][date].uv++
+  async updateUV(donate_id, date) {
+    this.initStatistics(donate_id, date)
+    this.cache_statistics_daily[donate_id][date].uv++
   }
 
-  initStatistics(donate_id, url, date) {
+  initStatistics(donate_id, date) {
     if (!this.cache_statistics_daily[donate_id]) {
-      this.cache_statistics_daily[donate_id] = { [url]: { [date]: { uv: 0, click: 0 } } }
-    } else if (!this.cache_statistics_daily[donate_id][url]) {
-      this.cache_statistics_daily[donate_id][url] = { [date]: { uv: 0, click: 0 } }
-    } else if (!this.cache_statistics_daily[donate_id][url][date]) {
-      this.cache_statistics_daily[donate_id][url][date] = { uv: 0, click: 0 }
+      this.cache_statistics_daily[donate_id] = { [date]: { uv: 0, click: 0 } }
+    } else if (!this.cache_statistics_daily[donate_id][date]) {
+      this.cache_statistics_daily[donate_id][date] = { uv: 0, click: 0 }
     }
   }
 
@@ -62,20 +63,18 @@ class Store {
       let _cache_statistics = this.cache_statistics_daily
       this.cache_statistics_daily = {}
       for (let donate_id in _cache_statistics) {
-        for (let url in _cache_statistics[donate_id]) {
-          for (let date in _cache_statistics[donate_id][url]) {
-            await model.add_statistics_daily(donate_id, url, date, _cache_statistics[donate_id][url][date])
-          }
+        for (let date in _cache_statistics[donate_id]) {
+          await this.add_statistics_daily(donate_id, date, _cache_statistics[donate_id][date])
         }
       }
-    }, 1000 * 60 * 15)
+    }, CACHE_TIME.update_uv_and_click)
   }
 
   async updateAssetsPrice() {
     this._updateAssetsPrice()
     setInterval(async () => {
       this._updateAssetsPrice()
-    }, 1000 * 60 * 5)
+    }, CACHE_TIME.asset)
   }
 
   async _updateAssetsPrice() {
@@ -93,7 +92,7 @@ class Store {
     this._updateFiats()
     setInterval(() => {
       this._updateFiats()
-    }, 1000 * 60 * 5)
+    }, CACHE_TIME.fiats)
   }
 
   async _updateFiats() {
@@ -107,4 +106,11 @@ class Store {
   }
 }
 
-module.exports = new Store()
+function clearCache(list, key) {
+  if (list[key].timmer) clearTimeout(list[key].timer)
+  list[key].timmer = setTimeout(() => {
+    delete list[key]
+  }, CACHE_TIME.donate_info);
+}
+
+module.exports = Store

@@ -9,13 +9,9 @@
         <p>{{$t('home.step.number', {number: active_step})}}</p>
         <Step1 v-if="active_step === 1" @nextStep="nextStep" />
         <Step2 v-if="active_step === 2" @nextStep="nextStep" />
-        <div v-if="active_step === 3" class="step3">
-          <p>{{$t('home.step.3info')}}</p>
-          <button @click="click_to_auth">{{$t('home.step.3button')}}</button>
-          <a target="_blank" href="https://mixin.one/messenger">{{$t('home.step.3noMessenger')}}</a>
-        </div>
-
-        <Step4 v-if="active_step === 4" />
+        <Step3 v-if="active_step === 3" @nextStep="nextStep" />
+        <Step4 v-if="active_step === 4" @nextStep="nextStep" />
+        <Step5 v-if="active_step === 5" />
       </div>
     </div>
   </div>
@@ -24,10 +20,12 @@
 <script>
 import Step1 from "@/components/Generate/Step1";
 import Step2 from "@/components/Generate/Step2";
+import Step3 from "@/components/Generate/Step3";
 import Step4 from "@/components/Generate/Step4";
+import Step5 from "@/components/Generate/Step5";
 export default {
   name: "Modal",
-  components: { Step1, Step2, Step4 },
+  components: { Step1, Step2, Step3, Step4, Step5 },
   props: {
     show_modal: {
       type: Boolean,
@@ -40,7 +38,8 @@ export default {
   },
   data() {
     return {
-      active_step: 1
+      active_step: 1,
+      resp: {}
     };
   },
   methods: {
@@ -51,14 +50,11 @@ export default {
       this.active_step = 1;
       window.sessionStorage.clear();
       this.$emit("close");
-    },
-    click_to_auth() {
-      window.location.href = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=PROFILE:READ+ASSETS:READ&response_type=code`;
     }
   },
   mounted() {
-    let data = window.sessionStorage.getItem("donate_id");
-    if (data) this.active_step = 4;
+    let step4 = window.sessionStorage.getItem("step4");
+    if (step4) this.active_step = 4;
   }
 };
 </script>
@@ -185,30 +181,6 @@ export default {
   }
 }
 
-.step3 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  p {
-    margin-top: 120px;
-    width: 520px;
-    line-height: 28px;
-    text-align: center;
-  }
-
-  button {
-    margin-top: 80px;
-    width: 286px;
-  }
-
-  a {
-    margin-top: 128px;
-    color: #0a58f1;
-    cursor: pointer;
-  }
-}
-
 @media screen and (max-width: 67.5rem) {
   .modal {
     position: fixed;
@@ -250,29 +222,6 @@ export default {
     h2 {
       margin-top: 3rem;
       font-size: 1.5rem;
-    }
-  }
-
-  .step3 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    p {
-      margin-top: 4.88rem;
-      width: calc(100% - 50px);
-      font-size: 18px;
-      line-height: 32px;
-      text-align: center;
-    }
-
-    button {
-      margin: 2.8rem 0 1rem 0;
-      width: 266px;
-    }
-
-    a {
-      margin: 9rem 0 1rem;
     }
   }
 }

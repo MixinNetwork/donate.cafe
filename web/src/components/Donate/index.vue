@@ -1,9 +1,15 @@
 <template>
   <div class="page">
-    <Step1 v-if="show_state==1" :donate_info="donate_info" @next="next_step" />
+    <Step1
+      v-if="show_state==1"
+      :active_asset_idx="active_asset_idx"
+      :donate_info="donate_info"
+      @next="next_step"
+    />
     <Step2
       v-else-if="show_state==2"
       :donate_info="donate_info"
+      :active_asset_idx="active_asset_idx"
       :active_amount_idx="active_amount_idx"
     ></Step2>
   </div>
@@ -17,6 +23,7 @@ export default {
   data() {
     return {
       show_state: -1,
+      active_asset_idx: 0,
       active_amount_idx: 0,
       donate_info: {}
     };
@@ -28,17 +35,25 @@ export default {
     }
   },
   async mounted() {
-    let { params = {} } = this.$route;
-    let { id } = params;
-    if (!id) return toHome.call(this);
-    let data = await this.APIS.getDonate(id);
+    let { params = {}, query } = this.$route;
+    let { name } = params;
+    if (!name) return toHome.call(this);
+    let data = await this.APIS.getDonate(name);
     if (!data) return toHome.call(this);
     this.donate_info = data;
+    if (query.prefer) {
+      let { prefer } = query;
+      let { addresses } = data;
+      let active_asset_idx = addresses.findIndex(
+        ({ symbol }) => symbol.toLowerCase() == prefer.toLowerCase()
+      );
+      this.active_asset_idx = active_asset_idx === -1 ? 0 : active_asset_idx;
+    }
     this.show_state = 1;
   }
 };
 function toHome() {
-  this.$message("donate_id 无效");
+  this.$message(this.$t("error.id"));
   this.$router.push("/");
 }
 </script>

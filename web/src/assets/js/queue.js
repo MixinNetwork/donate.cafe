@@ -21,20 +21,4 @@ class Queue {
   }
 }
 
-class UploadQueue {
-  constructor() {
-    this.list = {}
-  }
-  push(donate_id, callback) {
-    if (!this.list[donate_id]) this.list[donate_id] = new Queue()
-    this.list[donate_id].push(callback)
-    clearTimeout(this.list[donate_id].timmer)
-    this.list[donate_id].timmer = setTimeout(() => {
-      delete this.list[donate_id]
-    }, 1000 * 60 * 5);
-  }
-}
-
-let uploadQueue = new UploadQueue()
-
-module.exports = { Queue, uploadQueue }
+export default new Queue()

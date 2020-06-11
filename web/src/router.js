@@ -15,7 +15,7 @@ const routes = [
     component: () => import('./views/Auth')
   },
   {
-    path: '/:id',
+    path: '/:name',
     name: 'donate',
     component: () => import('./views/Donate')
   }

@@ -30,6 +30,10 @@ export default {
       default() {
         return {};
       }
+    },
+    active_asset_idx: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -46,14 +50,14 @@ export default {
       }
     },
     calculate_amount(index) {
-      let { donate_info } = this;
+      let { donate_info, active_asset_idx } = this;
       let { amount_info, currency, addresses } = donate_info;
-      let { price } = addresses[0];
+      let { price, symbol } = addresses[active_asset_idx];
       let amount = amount_info[index].amount;
-      let { symbol, fiats } = currency;
-      if (amount.startsWith(symbol))
-        amount = Number(amount.substr(symbol.length));
-      return (amount / fiats / price).toFixed(8) + " BTC";
+      let { symbol: c_symbol, fiats } = currency;
+      if (amount.startsWith(c_symbol))
+        amount = Number(amount.substr(c_symbol.length));
+      return (amount / fiats / price).toFixed(8) + " " + symbol.toUpperCase();
     }
   }
 };

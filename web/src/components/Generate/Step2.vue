@@ -18,7 +18,7 @@
         <div @click="select_currency_mode=!select_currency_mode" class="select-container">
           {{active_currency_item.currency}} ({{active_currency_item.symbol}})
           <ul v-if="select_currency_mode">
-            <li v-for="(item, index) in countrys" :key="index" @click="active_currency_idx=index">
+            <li v-for="(item, index) in countrys" :key="index" @click="toggle_currency(item,index)">
               <img :src="country_info[item]&& country_info[item].view_url" alt />
               {{item}} ({{country_info[item] && country_info[item].symbol}})
             </li>
@@ -30,7 +30,7 @@
         <input @input="input_amount" @blur="fix_amount" v-model="tmp_amount" type="text" />
         <span>{{calculate_amount(tmp_amount)}}</span>
       </div>
-      <div class="label">
+      <div v-if="amount_conf[active_amount_idx]" class="label">
         <label>{{$t('home.step.2label')}}</label>
         <input v-model="amount_conf[active_amount_idx].label" maxlength="60" type="text" />
       </div>
@@ -40,66 +40,50 @@
 </template>
 
 <script>
-import countrys from "@/assets/js/country.js";
+import {
+  default_config,
+  countries,
+  country_list,
+  language_amount_config,
+  rate
+} from "@/assets/js/generate2config.js";
 
 export default {
   name: "Step2",
   data() {
     return {
       btc_price: "9000",
-      amount_conf: [
-        { amount: "$5.00", label: this.$t("home.step.2info")[0] },
-        { amount: "$25.00", label: this.$t("home.step.2info")[1] },
-        { amount: "$50.00", label: this.$t("home.step.2info")[2] }
-      ],
+      amount_conf: [],
+      amount_conf_list: {},
       active_amount_idx: 0,
-      active_currency_idx: -1,
-      active_currency_item: { currency: "USD", symbol: "$", rate: 1 },
-
+      active_currency_item: {},
       select_currency_mode: false,
-
       tmp_amount: "",
-
-      countrys: countrys.country_list,
-      country_info: countrys.countries
+      countrys: country_list,
+      country_info: countries,
+      rate
     };
-  },
-  watch: {
-    active_currency_idx(val, oldVal) {
-      let { countrys, country_info } = this;
-      let currency = countrys[val];
-      this.active_currency_item = { currency, ...country_info[currency] };
-      if (oldVal === -1) return;
-      let { symbol, rate } = country_info[currency];
-      let { amount_conf, tmp_amount } = this;
-      let oldCurrency = countrys[oldVal];
-      let { symbol: oldSymbol, rate: oldRate } = country_info[oldCurrency];
-      let oldSymbolLength = oldSymbol.length;
-      let params = { oldSymbolLength, oldRate, rate, symbol };
-      for (let i = 0; i < amount_conf.length; i++) {
-        if (amount_conf[i].amount.startsWith(oldSymbol)) {
-          amount_conf[i].amount = toggle_currency(
-            amount_conf[i].amount,
-            params
-          );
-        }
-      }
-      if (tmp_amount.startsWith(oldSymbol)) {
-        this.tmp_amount = toggle_currency(tmp_amount, params);
-      }
-    }
   },
   methods: {
     toggle_amount(amount, index) {
       this.tmp_amount = amount;
       this.active_amount_idx = index;
     },
+    toggle_currency(item, index) {
+      this.active_currency_item = {
+        currency: item,
+        symbol: countries[item].symbol
+      };
+      initCurrency.call(this, item);
+      initAmountConfig.call(this, countries[item].amount_conf);
+    },
     calculate_amount(amount) {
-      let {
-        active_currency_item: { symbol = "$", rate = 1 }
-      } = this;
+      if (!amount) return;
+      let { active_currency_item, rate, btc_price } = this;
+      let { symbol, currency } = active_currency_item;
+      rate = rate[currency];
       if (amount.startsWith(symbol)) amount = amount.substr(symbol.length);
-      return (Number(amount) / rate / this.btc_price).toFixed(8) + " BTC";
+      return (Number(amount) / rate / btc_price).toFixed(8) + " BTC";
     },
     input_amount(e) {
       let { value } = e.target;
@@ -127,52 +111,72 @@ export default {
       }
     },
     click_next() {
-      setSessionStorage("amount", JSON.stringify(this.amount_conf));
-      setSessionStorage("currency", this.active_currency_item.currency);
+      this.$ls.set("amount", this.amount_conf);
+      this.$ls.set("currency", this.active_currency_item.currency);
       this.$emit("nextStep");
     }
   },
-  async mounted() {
-    let { amount_conf, active_amount_idx } = this;
-    this.toggle_amount(amount_conf[0].amount, 0);
-    initFiats.call(this);
-    await initBtcPrice.call(this);
-    this.active_currency_idx = 0;
+  mounted() {
+    initPageFromLocalStore.call(this);
+    initPageFromNetwork.call(this);
   }
 };
 
-async function initBtcPrice() {
-  let btc_price = window.localStorage.getItem("btc_price");
-  if (btc_price) this.btc_price = btc_price;
-  this.btc_price = await this.APIS.getBtcPrice();
-  window.localStorage.setItem("btc_price", this.btc_price);
+function initPageFromLocalStore() {
+  let fiats = this.$ls.get("fiats");
+  initFiats.call(this, fiats);
+
+  let btc_price = this.$ls.get("btc_price");
+  initBtcPrice.call(this, btc_price || 9000);
+
+  let currency = this.$ls.get("currency");
+  initCurrency.call(this, currency);
+
+  let config_amount = this.$ls.get("amount");
+  initAmountConfig.call(this, config_amount);
 }
 
-async function initFiats() {
+async function initPageFromNetwork() {
   let fiats = await this.APIS.getFiats();
-  for (let key in this.country_info) {
-    this.$set(this.country_info[key], "rate", fiats[key]);
-  }
+  initFiats.call(this, fiats);
+  this.$ls.set("fiats", fiats);
+  let btc_price = await this.APIS.getBtcPrice();
+  initBtcPrice.call(this, btc_price);
+  this.$ls.set("btc_price", btc_price);
 }
 
-function toggle_currency(
-  tmp_amount,
-  { oldSymbolLength, oldRate, rate, symbol }
-) {
-  let amount = tmp_amount.substr(oldSymbolLength);
-  amount = (Number(amount) / oldRate) * rate;
-  let fix_amount = (symbol + amount.toFixed(2)).substr(0, 9);
-  let fix_list = fix_amount.split(".");
-  if (fix_list.length === 2 && fix_list[1].length < 2) {
-    return fix_list[0];
-  }
-  if (fix_amount[fix_amount.length - 1] === ".")
-    fix_amount = fix_amount.slice(0, -1);
-  return fix_amount;
+async function initFiats(fiats) {
+  this.rate = fiats || rate;
 }
 
-function setSessionStorage(key, value) {
-  window.sessionStorage.setItem(key, value);
+async function initBtcPrice(btc_price) {
+  this.btc_price = btc_price;
+}
+
+async function initCurrency(currency) {
+  currency =
+    currency ||
+    this.$ls.get("currency") ||
+    (language_amount_config[navigator.language] &&
+      language_amount_config[navigator.language].currency) ||
+    "USD";
+  this.active_currency_item = {
+    currency,
+    symbol: countries[currency].symbol,
+    rate: this.country_info[currency].rate || rate[currency]
+  };
+  this.$ls.set("currency", currency);
+}
+
+async function initAmountConfig(amount_config) {
+  this.amount_conf =
+    amount_config ||
+    (this.$ls.get("currency") &&
+      countries[this.$ls.get("currency")].amount_conf) ||
+    (language_amount_config[navigator.language] &&
+      language_amount_config[navigator.language].amount_conf) ||
+    default_config.amount_conf;
+  this.tmp_amount = this.amount_conf[0].amount;
 }
 </script>
 

@@ -51,6 +51,10 @@ export default {
     active_amount_idx: {
       type: Number,
       default: 0
+    },
+    active_asset_idx: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -59,6 +63,7 @@ export default {
       active_index: 0,
       active_amount_token: "",
       timer: null,
+      ex_timer: null,
       paid: false,
       client_url: process.env.VUE_APP_CLIENT
     };
@@ -96,7 +101,7 @@ export default {
     }
   },
   mounted() {
-    this.click_asset(null, 0);
+    this.click_asset(null, this.active_asset_idx);
   }
 };
 
@@ -118,12 +123,22 @@ function resetAsset(item, index) {
   let amount = active_amount.amount;
   if (amount.startsWith(csymbol)) amount = amount.substr(csymbol.length);
   price = Number(price);
-  let _amount = (Number(amount) / (price * fiats)).toFixed(8);
+  let _amount = (Number(amount) / (price * fiats)).toFixed(6);
+  let random_amount = (Math.random() * 100) | 0;
+  _amount += random_amount;
   this.active_amount_token = _amount + " " + symbol;
   let trace_id = _getUUID();
-  let label = encodeURIComponent(active_amount.label.substr(0, 40));
+  let label = encodeURIComponent(active_amount.label);
+  if (label.length > 140)
+    label = encodeURIComponent(active_amount.label.substr(0, 40));
   let memo = "donate:" + label;
-  resetWatcher.call(this, _amount, asset_id, user_id, trace_id);
+  let params = {
+    amount: _amount,
+    asset_id,
+    counter_user_id: user_id,
+    trace_id
+  };
+  resetWatcher.call(this, params, destination);
   return `${prefix}:${destination}?amount=${_amount}&asset=${asset_id}&recipient=${user_id}&trace=${trace_id}&memo=${memo}`;
 }
 
@@ -136,20 +151,47 @@ function resetQRCode(value) {
   });
 }
 
-function resetWatcher(amount, asset_id, counter_user_id, trace_id) {
+function resetWatcher(params, destination) {
+  resetTimer.call(this, params);
+  resetExTimer.call(this, params, destination);
+}
+
+function resetTimer(params) {
   if (this.timer) {
     clearInterval(this.timer);
   }
-  let params = { amount, asset_id, counter_user_id, trace_id };
   this.timer = setInterval(async () => {
     let { status } = await this.APIS.checkPaid(params);
-    if (status === "paid") {
-      clearInterval(this.timer);
-      this.timer = null;
-      this.paid = true;
-      this.$refs.audio.play();
+    if (status === "paid") success.call(this);
+  }, 2000);
+}
+
+function resetExTimer({ asset_id, amount }, destination) {
+  if (this.ex_timer) {
+    clearInterval(this.ex_timer);
+  }
+  let params = { asset_id, destination };
+  this.ex_timer = setInterval(async () => {
+    let t = await this.APIS.checkExternalPaid(params);
+    if (Array.isArray(t)) {
+      for (let i = 0; i < t.length; i++) {
+        let { amount: _amount } = t[i];
+        if (amount == _amount) {
+          success.call(this);
+          break;
+        }
+      }
     }
   }, 2000);
+}
+
+function success() {
+  clearInterval(this.timer);
+  clearInterval(this.ex_timer);
+  this.timer = null;
+  this.ex_timer = null;
+  this.paid = true;
+  this.$refs.audio.play();
 }
 </script>
 
@@ -271,6 +313,7 @@ canvas {
   height: 17px;
   color: #4c4471;
   text-decoration: none;
+  white-space: nowrap;
   img {
     margin: 0 4px;
     width: 12px;

@@ -18,8 +18,8 @@
       <template v-else>
         <input type="file" accept="image/*" @change="croppie" />
         <img
-          v-if="tmp_file"
-          :src="tmp_file"
+          v-if="file"
+          :src="file"
           :style="{width: button.width+'px', height: button.height+'px'}"
         />
         <span v-else>{{$t('home.step.1choose')}}</span>
@@ -41,7 +41,7 @@ export default {
         width: "150",
         height: ""
       },
-      tmp_file: null
+      file: null
     };
   },
   methods: {
@@ -49,9 +49,17 @@ export default {
       this.button_mode_default = mode;
     },
     click_next() {
-      let { button_mode_default, tmp_file } = this;
-      if (!button_mode_default && tmp_file)
-        window.sessionStorage.setItem("file", tmp_file);
+      let { button_mode_default: button, file } = this;
+      if (!button && file) {
+        let oldFile = this.$ls.get("file");
+        let oldButton = this.$ls.get("button");
+        this.$ls.set("button", "user");
+        this.$ls.set("file", file);
+        (oldFile !== file || oldButton !== button) &&
+          this.$ls.set("file_change", "1");
+      } else {
+        this.$ls.set("button", "default");
+      }
       this.$emit("nextStep");
     },
     async croppie(e) {
@@ -71,8 +79,17 @@ export default {
         this.button.width = clientWidth;
         this.button.height = (height / width) * clientWidth;
       }
-      this.tmp_file = data;
+      this.file = data;
     }
+  },
+  mounted() {
+    let file = this.$ls.get("file");
+    let button = this.$ls.get("button");
+    if (file) {
+      this.file = file;
+      this.button_mode_default = false;
+    }
+    this.button_mode_default = button !== "user";
   }
 };
 
@@ -90,7 +107,7 @@ function getImgSize(imgSrc) {
 function getFile(file) {
   let { size, type } = file;
   if (size > 1024 * 1024 * 3) {
-    this.$message("The file must not be larger than 5M");
+    this.$message(this.$t("home.step.1notice"));
     return false;
   }
 
