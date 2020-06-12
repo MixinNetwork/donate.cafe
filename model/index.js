@@ -22,7 +22,7 @@ class Model extends Store {
     if (!addresses) return { error: 'asset' }
     let { user_id, full_name, avatar_url } = user
     await this.add_user({ user_id, full_name, avatar_url, access_token })
-    if (avatar_url) avatar_url = tools.getAvatarColor(user_id) + ';' + full_name[0].toUpperCase()
+    if (!avatar_url) avatar_url = tools.getAvatarColor(user_id) + ';' + full_name[0].toUpperCase()
     return { user_id, access_token, avatar_url, addresses }
   }
 
