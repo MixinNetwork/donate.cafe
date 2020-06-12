@@ -22,7 +22,12 @@
     <p class="amount">{{active_amount.amount}} ({{active_amount_token}})</p>
     <template v-if="!paid">
       <canvas ref="qrcode"></canvas>
-      <p class="address">{{active_asset.destination}}</p>
+      <button
+        class="mixin-button"
+        @click="click_to_pay"
+        v-if="mixin_context"
+      >{{donate_info.currency.message[2]}}</button>
+      <p v-else class="address">{{active_asset.destination}}</p>
     </template>
     <template v-else>
       <i class="success"></i>
@@ -34,12 +39,13 @@
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJsSURBVHgB1VQxaFRBEJ3Z3dwZUPBMc4QTlCjYGBsLr4uVWgbUaCFoYaVJIyoYUFMEBTkURDshlYZrgpWFoIJoNBaS2BoIJgFBYiKSy93/f2eye/f/7f93lyuONHmwt3935t7M25ldgB2P7Cf9IvueB2CbkZ32B3o/6lfY+85nAARE/AGaJkCq4vJJXIIOcOA77/X+0wgGdIYRTwAzKBFYE9tx1PwUmINzZs5DB9Cr+q0I+HhtxSZtAIUBJ5wEQgY6BHq8G6jGh+GeEj6FS2NgdJYGHHxd6SfgJwjS06SvLQ7umm8RALAagOshlPCijZqsxgC5YvlQGvkWeXRFGH+AwMjGn31T3oQGPbYw2L0Q+QpbTiLHZfdsgORw5IcnyzfTAc2Bx1eNTdV9KoakFFyWJZ7ve7kxGvnLJi5bZI+SMkG4hcdDQlM3bA1hum/IzOPVhSFkowDBnYmSFY6YwzK4gFWbTtqbQ8Q+rT9xPNuoyHEJ7h/V+hBBO3DM35TftH7SX4kKN/BzQgETQzvE+GNdFAsgvUYF7lP6/Je1s3Ozi5GpSomEQgWRT62LfDcwFjC19u+i0DgiffhlbbZLpB92SACroOVdLPun67G80CfRRW1qMPMgt2Kmp/33lqZStOc2sX8eGdIkxfOuVKYwcwdXEmICStTMKlboN9SgRavMjeXs4zd8bHTxYaYrt/7hPq5BC9ga2AcuYrKpKuHHb6/ZlOIbbIHZ8f3L0AYygFnTFEdc/vai6Op5gjnrN4pTp7482ncJOsTXQs8Fc43OosZJwweWG/PDf4pI4vHnZz3TsI3IX/9tnn9xA3Y8NgF9RjiKSGtofAAAAABJRU5ErkJggg=="
       /> Mixin
     </a>
-    <audio ref="audio" src="https://taskwall.zeromesh.net/donate/payment_success.mp3"></audio>
+    <audio ref="audio" src="@/assets/audio/payment_success.mp3"></audio>
   </div>
 </template>
 
 <script>
 import qrious from "qrious";
+import tools from "@/assets/js/tools.js";
 export default {
   props: {
     donate_info: {
@@ -65,7 +71,9 @@ export default {
       timer: null,
       ex_timer: null,
       paid: false,
-      client_url: process.env.VUE_APP_CLIENT
+      client_url: process.env.VUE_APP_CLIENT,
+      mixin_context: false,
+      address: ""
     };
   },
   filters: {
@@ -96,12 +104,17 @@ export default {
       }
     },
     click_asset(item, index) {
-      let value = resetAsset.call(this, item, index);
-      resetQRCode.call(this, value);
+      this.address = resetAsset.call(this, item, index);
+      resetQRCode.call(this);
+    },
+    click_to_pay() {
+      let params = this.address.split("?")[1];
+      window.location.href = "https://mixin.one/pay?" + params;
     }
   },
   mounted() {
     this.click_asset(null, this.active_asset_idx);
+    if (tools.environment()) this.mixin_context = true;
   }
 };
 
@@ -142,7 +155,8 @@ function resetAsset(item, index) {
   return `${prefix}:${destination}?amount=${_amount}&asset=${asset_id}&recipient=${user_id}&trace=${trace_id}&memo=${memo}`;
 }
 
-function resetQRCode(value) {
+function resetQRCode() {
+  let value = this.address;
   new qrious({
     element: this.$refs.qrcode,
     value: value,
@@ -304,6 +318,12 @@ canvas {
   color: #bbbec3;
 }
 
+.mixin-button {
+  padding: 0 30px;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
 .powered {
   position: absolute;
   bottom: 50px;
@@ -341,7 +361,7 @@ canvas {
     max-width: calc(100% - 40px);
   }
   .powered {
-    bottom: 40px;
+    bottom: 35px;
   }
 }
 </style>

@@ -1,6 +1,7 @@
 const DB = require('../db')
 const APIS = require('../api')
 const { ASSETS, DEFAULT_VIEW_URL, CACHE_TIME } = require('../tools/const')
+const { getAvatarColor } = require('../tools')
 
 class Store extends DB {
   constructor() {
@@ -30,6 +31,7 @@ class Store extends DB {
     if (!this.cache_donate_list[donate_id] || this.cache_donate_list[donate_id].updated) {
       let dataInfo = await this.get_donate(donate_id)
       if (!dataInfo) return false
+      if (dataInfo.avatar_url) dataInfo.avatar_url = getAvatarColor(dataInfo.user_id)
       if (!dataInfo.view_url) dataInfo.view_url = DEFAULT_VIEW_URL
       this.cache_donate_list[donate_id] = {
         data: dataInfo,

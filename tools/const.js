@@ -31,19 +31,19 @@ module.exports.ASSET_EXTRA_DATE = [
 ]
 
 module.exports.CURRENCY = {
-  USD: { symbol: "$", message: ["Donate", "Thank you donating"] },
-  CNY: { symbol: "¥", message: ["捐赠", "谢谢捐赠"] },
-  JPY: { symbol: "¥", message: ["寄付", "寄付してくれてありがとう"] },
-  HKD: { symbol: "HK$", message: ["捐贈", "謝謝捐贈"] },
+  USD: { symbol: "$", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
+  CNY: { symbol: "¥", message: ["捐赠", "谢谢捐赠", "在 Mixin Messenger 中付款"] },
+  JPY: { symbol: "¥", message: ["寄付", "寄付してくれてありがとう", "Mixin Messengerで支払う"] },
+  HKD: { symbol: "HK$", message: ["捐贈", "謝謝捐贈", "在 Mixin Messenger 中付款"] },
   KRW: { symbol: "₩", message: ["기부", "기부 해 주셔서 감사합니다"] },
-  AUD: { symbol: "A$", message: ["Donate", "Thank you donating"] },
-  EUR: { symbol: "€", message: ["Donate", "Thank you donating"] },
-  GBP: { symbol: "£", message: ["Donate", "Thank you donating"] },
-  SGD: { symbol: "S$", message: ["Donate", "Thank you donating"] },
-  MYR: { symbol: "RM", message: ["Donate", "Thank you donating"] },
+  AUD: { symbol: "A$", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
+  EUR: { symbol: "€", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
+  GBP: { symbol: "£", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
+  SGD: { symbol: "S$", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
+  MYR: { symbol: "RM", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
 }
 
-module.exports.DEFAULT_VIEW_URL = 'https://taskwall.zeromesh.net/donate.svg'
+module.exports.DEFAULT_VIEW_URL = 'https://donate.cafe/donate.svg'
 
 module.exports.RESERVED_WORD = [
   "btc_price", "donate_id", "currency", "fiats", "button", "amount", "token", "avatar_url", "name", "view_url", "file", "file_change"
@@ -57,3 +57,4 @@ module.exports.CACHE_TIME = {
   update_uv_and_click: 1000 * 60 * 15
 }
 
+module.exports.AvatarColors = ['#FFD659', '#FFC168', '#F58268', '#F4979C', '#EC7F87', '#FF78CB', '#C377E0', '#8BAAFF', '#78DCFA', '#88E5B9', '#BFF199', '#C5E1A5', '#CD907D', '#BE938E', '#B68F91', '#BC987B', '#A69E8E', '#D4C99E', '#93C2E6', '#92C3D9', '#8FBFC5', '#80CBC4', '#A4DBDB', '#B2C8BD', '#F7C8C9', '#DCC6E4', '#BABAE8', '#BABCD5', '#AD98DA', '#C097D9']

@@ -400,8 +400,7 @@ button {
   .step2 {
     width: 100%;
     box-sizing: border-box;
-    padding: 0;
-    padding-left: 2rem;
+    padding: 0 2rem;
 
     & > ul {
       display: flex;
@@ -419,8 +418,9 @@ button {
       }
 
       li {
-        min-width: 147px;
-        padding: 20px 0 0 18px;
+        min-width: 120px;
+        height: 117px;
+        padding: 20px 18px 10px 18px;
         margin: 1rem 0;
         margin-right: 1.2rem;
 
@@ -467,10 +467,6 @@ button {
     flex-direction: column;
     margin-top: 1rem;
 
-    .amount,
-    .label {
-      margin-right: 30px;
-    }
 
     .currency {
       ul {
@@ -482,6 +478,7 @@ button {
 
     .currency,
     .amount {
+      margin-right: 0;
       max-width: initial;
     }
 

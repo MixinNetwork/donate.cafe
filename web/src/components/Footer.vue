@@ -2,7 +2,7 @@
   <footer>
     <ul>
       <li>
-        <a target="_blank" href="https://twitter.com/mixindonate">Twitter</a>
+        <a target="_blank" href="https://twitter.com/donatecafe">Twitter</a>
       </li>
       <li>
         <a target="_blank" href="https://github.com/MixinNetwork/donation-button">Github</a>

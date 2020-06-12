@@ -13,7 +13,7 @@
 
     <div ref="choose" :class="['img', !button_mode_default && 'choose-img']">
       <template v-if="button_mode_default">
-        <img src="https://taskwall.zeromesh.net/donate.svg" />
+        <img src="@/assets/img/donate.svg" />
       </template>
       <template v-else>
         <input type="file" accept="image/*" @change="croppie" />

@@ -58,14 +58,10 @@ export default {
 function getJsCode(resp) {
   let donate_id = window.localStorage.getItem("donate_id");
   return `
-<!-- This line should go where you want to put your button -->
 <div class="--donate-button"
      data-button-id="${donate_id}"
 ></div>
-<!-- This line can go anywhere -->
-<script src="https://donate.cafe/donate.js?t=${Number(
-    new Date()
-  )}"><\/script>`;
+<script src="https://donate.cafe/donate.js?t=${Number(new Date())}"><\/script>`;
 }
 
 function getImageCode(resp) {
@@ -121,7 +117,7 @@ pre {
   box-sizing: border-box;
   background-color: #f8f9fb;
   line-height: 28px;
-  overflow: hidden;
+  overflow: auto;
 
   code {
     font-family: Nunito;
@@ -172,10 +168,17 @@ button {
   }
 
   pre {
-    padding: 12px 20px 30px 20px;
+    padding: 0 20px 0 20px;
     box-sizing: border-box;
     text-align: left;
     width: 100%;
+
+    code {
+      display: block;
+      width: 100%;
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
   }
 
   p {

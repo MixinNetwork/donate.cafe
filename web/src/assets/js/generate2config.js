@@ -15,7 +15,7 @@ let _countries = {
     view_url:
       "https://mixin-assets-cn.zeromesh.net/mixin/attachments/1591149000-119aa2a73eaa85dd04f59807c7a0a4e0b12daf66632dfab244ebb7d976ad7710",
     amount: ['¥3.14', '¥15.92', '¥65.35'],
-    label: ["给我来杯咖啡 ☕️", "给我来盒饼干 🍪", "给我来份披萨 🍕"]
+    label: ["给我来杯蛋筒 🍦", "给我来杯咖啡 ☕️", "给我来份披萨 🍕"]
   },
   JPY: {
     symbol: "¥",

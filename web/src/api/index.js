@@ -109,6 +109,8 @@ export default {
     isSaved = false
     let donate_id = _vm.$ls.get('donate_id')
     let params = { name, donate_id }
-    return await request.post('/setUser', params)
+    let data = await request.post('/setUser', params)
+    isSaved = true
+    return data
   }
 }

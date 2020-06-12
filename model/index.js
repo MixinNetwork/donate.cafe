@@ -22,6 +22,7 @@ class Model extends Store {
     if (!addresses) return { error: 'asset' }
     let { user_id, full_name, avatar_url } = user
     await this.add_user({ user_id, full_name, avatar_url, access_token })
+    if (avatar_url) avatar_url = tools.getAvatarColor(user_id) + ';' + full_name[0].toUpperCase()
     return { user_id, access_token, avatar_url, addresses }
   }
 
@@ -76,7 +77,7 @@ class Model extends Store {
     uploadQueue.push(donate_id, t)
     async function t() {
       let user = await self.get_user_by_token(access_token)
-      if (!user) return { error: 'auth' }
+      if (!user) return res.json({ error: 'auth' })
       let { view_url } = await self.get_donate(donate_id)
       view_url = view_url || DEFAULT_VIEW_URL
       try {

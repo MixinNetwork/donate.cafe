@@ -2,7 +2,7 @@ const fs = require('fs')
 const forge = require('node-forge');
 const jwt = require('jsonwebtoken');
 const { CLIENT_CONFIG: { client_id: uid, session_id: sid, private_key: privateKey } } = require('../config')
-const { ASSETS } = require('./const')
+const { ASSETS, AvatarColors } = require('./const')
 let APIS;
 class Tools {
   constructor() {
@@ -97,11 +97,36 @@ class Tools {
     })
   }
 
+  getAvatarColor(id) {
+    let components = id.split('-')
+    components = components.map(item => '0x' + item)
+    let mostSigBits = BigInt(components[0])
+    mostSigBits <<= BigInt(16)
+    mostSigBits = BigInt.asIntN(64, mostSigBits)
+    let c1 = BigInt(components[1])
+    mostSigBits |= c1
+    mostSigBits <<= BigInt(16)
+    mostSigBits = BigInt.asIntN(64, mostSigBits)
+    let c2 = BigInt(components[2])
+    mostSigBits |= c2
+    let leastSigBits = BigInt(components[3])
+    leastSigBits <<= BigInt(48)
+    leastSigBits = BigInt.asIntN(64, leastSigBits)
+    let c4 = BigInt(components[4])
+    leastSigBits |= c4
+    let hilo = mostSigBits ^ leastSigBits
+    hilo = BigInt.asIntN(64, hilo)
+    let m = BigInt.asIntN(32, (hilo >> BigInt(32)))
+    let n = BigInt.asIntN(32, hilo)
+    let result = Number(m ^ n)
+    return AvatarColors[Math.abs(result) % AvatarColors.length]
+  }
+
   getEnv() {
     switch (process.env.NODE_ENV) {
       case 'production':
         return {
-          client_host: 'https://donate.liuzemei.com/',
+          client_host: 'https://donate.cafe/',
         }
       case 'test':
         return {

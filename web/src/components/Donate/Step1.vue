@@ -1,6 +1,16 @@
 <template>
   <div class="step1">
-    <img class="avatar-img" :src="donate_info.avatar_url" alt="avatar" />
+    <img
+      class="avatar"
+      v-if="donate_info.avatar_url.startsWith('http')"
+      :src="donate_info.avatar_url"
+      alt="avatar"
+    />
+    <span
+      v-else-if="donate_info.user_id"
+      :style="`background-color:${donate_info.avatar_url}`"
+      class="avatar"
+    >{{donate_info.full_name.substring(0,1).toUpperCase()}}</span>
     <h4>{{donate_info.full_name}}</h4>
     <ul class="amount-select-list" ref="list">
       <li
@@ -71,12 +81,18 @@ export default {
   width: 100%;
 }
 
-.avatar-img {
-  display: block;
+.avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border: 3px solid rgba($color: #fff, $alpha: 0.3);
+
+  font-size: 2rem;
 }
 
 h4 {
@@ -85,6 +101,11 @@ h4 {
   line-height: 26px;
   padding: 0;
   color: #4c4471;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 360px;
+  text-align: center;
 }
 
 .amount-select-list {
@@ -135,7 +156,7 @@ li {
       right: 0;
       width: 31px;
       height: 31px;
-      background-image: url("https://taskwall.zeromesh.net/donate-select.svg");
+      background-image: url("../../assets/img/select.svg");
       background-repeat: no-repeat;
       background-position: center;
       background-color: #4c4471;
@@ -194,7 +215,12 @@ p {
     justify-content: flex-start;
   }
   li {
-    min-width: 90px;
+    min-width: 100px;
+  }
+  h4 {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 30px;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 export default {
   header: {
-    title: "Mixin Donate",
+    title: "Donate Cafe",
     login: "用 Mixin Messenger 登陆",
     logout: "登出",
     modify: "修改我的捐赠按钮"

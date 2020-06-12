@@ -6,6 +6,7 @@
       <li v-for="(item, index) in $t('home.props')" :key="index">{{item}}</li>
     </ul>
     <button @click="$emit('open')">{{$t('home.mainBtn')}}</button>
+    <img class="donate" src="@/assets/img/donate.svg" alt />
   </section>
 </template>
 
@@ -79,6 +80,12 @@ section {
   button {
     width: 287px;
   }
+}
+
+.donate {
+  width: 0;
+  height: 0;
+  opacity: 0;
 }
 
 @media screen and (max-width: 67.5rem) {

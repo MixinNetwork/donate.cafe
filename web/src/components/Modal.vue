@@ -202,6 +202,7 @@ export default {
   .content {
     width: calc(100% - 40px);
     height: calc(100% - 40px);
+    min-height: 460px;
     max-height: 675px;
     overflow: auto;
   }

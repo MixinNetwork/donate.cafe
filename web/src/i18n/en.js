@@ -1,12 +1,11 @@
 export default {
   header: {
-    title: "Mixin Donate",
+    title: "Donate Cafe",
     login: "Log in with Mixin Messenger",
     logout: "Logout",
     modify: "Modify My Donate Button"
   },
   home: {
-    title: "Mixin Donate",
     desc: "Accept <b>Bitcoin</b> Donate Now",
     props: [
       "Fast - Go live in minutes, not days",
