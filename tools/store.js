@@ -81,6 +81,7 @@ class Store extends DB {
 
   async _updateAssetsPrice() {
     let asset_list = await APIS.getAsset()
+    if (!asset_list) return
     for (let i = 0; i < ASSETS.length; i++) {
       let asset_id = ASSETS[i]
       let asset_item = asset_list.find(item => item.asset_id === asset_id)
@@ -99,6 +100,7 @@ class Store extends DB {
 
   async _updateFiats() {
     let fiat_list = await APIS.getFiats()
+    if (!fiat_list) return
     let tmpObj = {}
     for (let i = 0; i < fiat_list.length; i++) {
       let { code, rate } = fiat_list[i]
