@@ -61,7 +61,7 @@ function getJsCode(resp) {
 <div class="--donate-button"
      data-button-id="${donate_id}"
 ></div>
-<script src="https://donate.cafe/donate.js?t=${Number(new Date())}"><\/script>`;
+<script src="https://donate.cafe/donate.js"><\/script>`;
 }
 
 function getImageCode(resp) {
@@ -70,8 +70,8 @@ function getImageCode(resp) {
   let img = view_url;
   let href = process.env.VUE_APP_CLIENT + "/" + name;
   return `
-<a href=${href}>
-  <img style="width:150px" src=${img} />
+<a href="${href}">
+  <img style="width:150px" src="${img}" />
 </a>`;
 }
 
@@ -176,8 +176,9 @@ button {
     code {
       display: block;
       width: 100%;
-      word-break: break-all;
-      white-space: pre-wrap;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

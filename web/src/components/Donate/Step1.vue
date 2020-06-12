@@ -131,6 +131,7 @@ li {
   list-style: none;
   cursor: pointer;
   position: relative;
+  border: 3px solid transparent;
 
   &:last-child::after {
     content: "";
@@ -178,7 +179,6 @@ p {
     font-size: 11px;
     line-height: 15px;
     color: rgba(76, 68, 113, 0.5);
-    word-break: break-all;
     margin: 4px 0 14px 0;
   }
 
@@ -188,7 +188,6 @@ p {
     max-height: 60px;
     overflow: hidden;
     color: #4c4471;
-    word-break: break-all;
     opacity: 0.9;
   }
 }

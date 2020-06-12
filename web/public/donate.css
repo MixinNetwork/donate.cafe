@@ -204,6 +204,7 @@
   margin: 10px;
   box-sizing: border-box;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.06);
+  border: 3px solid transparent;
   border-radius: 16px;
   list-style: none;
   cursor: pointer;
@@ -214,6 +215,7 @@
   cursor: pointer;
   margin: 0;
   padding: 0;
+  text-align: left;
 }
 
 .--donate-button-plug .donate-amount-select-list li p:nth-child(1) {
@@ -226,7 +228,6 @@
   font-size: 11px;
   line-height: 15px;
   color: rgba(76, 68, 113, 0.5);
-  word-break: break-all;
   margin: 4px 0 14px 0;
 }
 
@@ -236,7 +237,6 @@
   max-height: 60px;
   overflow: hidden;
   color: #4c4471;
-  word-break: break-all;
   opacity: 0.9;
 }
 
