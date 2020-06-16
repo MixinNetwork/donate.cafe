@@ -1,16 +1,16 @@
 @font-face {
   font-family: 'Nunito';
-  src: url('https://donate.cafe/fonts/Nunito-Regular.1aaa8fb5.ttf') format('truetype'),
-    url('https://donate.cafe/fonts/Nunito-Regular.91150e57.woff') format('woff'),
-    url('https://donate.cafe/fonts/Nunito-Regular.b0256025.woff2') format('woff2');
+  src: url('https://donate.cafe/fonts/Nunito-Regular.1338ae88.ttf') format('truetype'),
+    url('https://donate.cafe/fonts/Nunito-Regular.ddf1833c.woff') format('woff'),
+    url('https://donate.cafe/fonts/Nunito-Regular.297d50ee.woff2') format('woff2');
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'Nunito';
-  src: url('https://donate.cafe/fonts/Nunito-SemiBold.530c2470.ttf') format('truetype'),
-    url('https://donate.cafe/fonts/Nunito-SemiBold.ecf303be.woff') format('woff'),
-    url('https://donate.cafe/fonts/Nunito-SemiBold.46cd47bb.woff2') format('woff2');
+  src: url('https://donate.cafe/fonts/Nunito-SemiBold.b34a3b79.ttf') format('truetype'),
+    url('https://donate.cafe/fonts/Nunito-SemiBold.4ac18e63.woff') format('woff'),
+    url('https://donate.cafe/fonts/Nunito-SemiBold.fd477437.woff2') format('woff2');
   font-weight: 600;
 }
 

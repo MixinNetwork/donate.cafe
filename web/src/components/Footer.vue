@@ -5,7 +5,7 @@
         <a target="_blank" href="https://twitter.com/donatecafe">Twitter</a>
       </li>
       <li>
-        <a target="_blank" href="https://github.com/MixinNetwork/donation-button">Github</a>
+        <a target="_blank" href="https://github.com/MixinNetwork/donate.cafe">Github</a>
       </li>
       <li>
         <a @click="$emit('show_faq')" href="javascript:void(0)">{{$t('home.faq')}}</a>

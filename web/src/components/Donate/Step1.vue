@@ -114,7 +114,7 @@ h4 {
   justify-content: center;
   margin-top: 28px;
   padding: 0;
-  overflow: auto;
+  overflow: hidden;
 
   &::-webkit-scrollbar {
     display: none;
@@ -212,6 +212,7 @@ p {
 @media screen and (max-width: 480px) {
   .amount-select-list {
     justify-content: flex-start;
+    overflow: auto;
   }
   li {
     min-width: 100px;

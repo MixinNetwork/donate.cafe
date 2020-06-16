@@ -31,16 +31,16 @@ module.exports.ASSET_EXTRA_DATE = [
 ]
 
 module.exports.CURRENCY = {
-  USD: { symbol: "$", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
-  CNY: { symbol: "¥", message: ["捐赠", "谢谢捐赠", "在 Mixin Messenger 中付款"] },
+  USD: { symbol: "$", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
+  CNY: { symbol: "¥", message: ["捐赠", "谢谢你的捐款", "在 Mixin Messenger 中付款"] },
   JPY: { symbol: "¥", message: ["寄付", "寄付してくれてありがとう", "Mixin Messengerで支払う"] },
-  HKD: { symbol: "HK$", message: ["捐贈", "謝謝捐贈", "在 Mixin Messenger 中付款"] },
+  HKD: { symbol: "HK$", message: ["捐贈", "謝謝你的捐款", "在 Mixin Messenger 中付款"] },
   KRW: { symbol: "₩", message: ["기부", "기부 해 주셔서 감사합니다"] },
-  AUD: { symbol: "A$", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
-  EUR: { symbol: "€", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
-  GBP: { symbol: "£", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
-  SGD: { symbol: "S$", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
-  MYR: { symbol: "RM", message: ["Donate", "Thank you donating", "Pay in Mixin Messenger"] },
+  AUD: { symbol: "A$", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
+  EUR: { symbol: "€", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
+  GBP: { symbol: "£", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
+  SGD: { symbol: "S$", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
+  MYR: { symbol: "RM", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
 }
 
 module.exports.DEFAULT_VIEW_URL = 'https://donate.cafe/donate.svg'
