@@ -1,2 +1,2 @@
 # Accept Bitcoin Donate Now 
-[http://donate.cafe](http://donate.cafe)
+[https://donate.cafe](https://donate.cafe)
