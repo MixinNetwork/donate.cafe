@@ -23,7 +23,9 @@ class Model extends Store {
     let { user_id, full_name, avatar_url } = user
     await this.add_user({ user_id, full_name, avatar_url, access_token })
     if (!avatar_url) avatar_url = tools.getAvatarColor(user_id) + ';' + full_name[0].toUpperCase()
-    return { user_id, access_token, avatar_url, addresses }
+    let { donate_id } = await this.get_donate_id_by_user(user_id) || {}
+    let has_donate = donate_id && true
+    return { data: { user_id, access_token, avatar_url, addresses, has_donate } }
   }
 
   async save_donate(access_token, file, amount_info, currency, addresses) {
@@ -34,7 +36,7 @@ class Model extends Store {
       if (!addresses) return { error: 'asset' }
     }
     let { user_id } = user
-    let { donate_id } = await this.get_donate_id_by_user(user_id)
+    let { donate_id } = await this.get_donate_id_by_user(user_id) || {}
     let action = EDIT
     if (!donate_id) {
       while (true) {
@@ -57,7 +59,7 @@ class Model extends Store {
       if (!currency || currency.length !== 3) currency = 'USD'
       await self.add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses })
     }
-    return { donate_id }
+    return { data: { donate_id } }
   }
 
 
@@ -66,12 +68,12 @@ class Model extends Store {
     if (user_error) return { error: user_error }
     let { donate_id, error: donate_error } = await this.save_donate(access_token, file, amount_info, currency, addresses)
     if (donate_error) return { error: donate_error }
-    return { access_token, donate_id, avatar_url }
+    return { data: { access_token, donate_id, avatar_url } }
   }
 
 
   async set_user(access_token, donate_id, name, res) {
-    if (RESERVED_WORD.includes(name)) return res.json({ error: 'name_repeat' })
+    if (RESERVED_WORD[name.toLowerCase()]) return res.json({ error: 'name_repeat' })
     if (name.length < 5) return res.json({ error: 'name_length' })
     const self = this
     uploadQueue.push(donate_id, t)

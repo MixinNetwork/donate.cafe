@@ -4,11 +4,20 @@
       <li>
         <a target="_blank" href="https://twitter.com/donatecafe">Twitter</a>
       </li>
-      <li>
-        <a target="_blank" href="https://github.com/MixinNetwork/donate.cafe">Github</a>
+      <li class="github">
+        <a target="_blank" href="https://github.com/MixinNetwork/donate.cafe">GitHub</a>
       </li>
       <li>
-        <a @click="$emit('show_faq')" href="javascript:void(0)">{{$t('home.faq')}}</a>
+        <a
+          @click="$emit('show_content', 'faq')"
+          href="javascript:void(0)"
+        >{{$t('home.modal.faq.title')}}</a>
+      </li>
+      <li>
+        <a
+          @click="$emit('show_content', 'about')"
+          href="javascript:void(0)"
+        >{{$t('home.modal.about.title')}}</a>
       </li>
     </ul>
   </footer>
@@ -44,6 +53,11 @@ footer {
     li {
       margin-right: 3.5rem;
     }
+  }
+}
+@media screen and (max-width: 32rem) {
+  .github {
+    display: none;
   }
 }
 </style>

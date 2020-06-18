@@ -217,7 +217,7 @@ button {
     transform: initial;
     display: flex;
     flex-direction: column;
-    margin-top: 5rem;
+    margin-top: 70px;
 
     span {
       font-size: 1.125rem;
@@ -238,12 +238,12 @@ button {
 
   .img {
     max-width: 270px;
-    height: 230px;
+    height: 220px;
   }
 
   button {
     display: block;
-    margin: 3rem auto 1rem auto;
+    margin: 38px auto 1rem auto;
   }
 }
 </style>

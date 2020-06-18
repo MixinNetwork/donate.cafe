@@ -1,6 +1,6 @@
 
 const default_amount = ['$5.00', '$25.00', '$50.00']
-const default_label = ["Donate by buying me a coffee☕️", "Donate by buying me a cake🍪", "Donate by buying me a pizza🍕"]
+const default_label = ["Buy me a coffee", "Buy me a beef salad", "Buy me an afternoon tea"]
 
 let _countries = {
   USD: {
@@ -14,7 +14,7 @@ let _countries = {
     symbol: "¥",
     view_url:
       "https://mixin-assets-cn.zeromesh.net/mixin/attachments/1591149000-119aa2a73eaa85dd04f59807c7a0a4e0b12daf66632dfab244ebb7d976ad7710",
-    amount: ['¥3.14', '¥15.92', '¥65.35'],
+    amount: ['¥6.66', '¥26.66', '¥66.66'],
     label: ["给我来杯蛋筒 🍦", "给我来杯咖啡 ☕️", "给我来份披萨 🍕"]
   },
   JPY: {
@@ -22,7 +22,7 @@ let _countries = {
     view_url:
       "https://mixin-assets-cn.zeromesh.net/mixin/attachments/1591149003-260db7418d518bd3c245e7f31d2cdbd534cb4dd17e24e97797fffbfb5d9d5c74",
     amount: ['¥500.00', '¥3000.00', '¥10000.00'],
-    label: ["コーヒーを買って寄付する☕️", "ケーキを買って寄付する🍪", "ピザを買って寄付する🍕"]
+    label: ["コーヒーを買って", "ビーフサラダを買って", "アフタヌーンティーを買って"]
   },
   EUR: {
     symbol: "€",
@@ -35,14 +35,13 @@ let _countries = {
     view_url:
       "https://mixin-assets-cn.zeromesh.net/mixin/attachments/1591149004-cae6b03138cdd3a1524a37c455b5a1ea07ed806338399d392a6d65c44a671c1f",
     amount: ['₩6000.00', '₩30000.00', '₩100000'],
-    label: ["나에게 커피를 사서 기부 ☕️", "나에게 케이크를 사서 기부 🍪", "나에게 피자를 사서 기부 🍕"]
+    label: ["나에게 커피를 사", "쇠고기 샐러드 사줘", "오후에 차 한잔 사줘"]
   },
   HKD: {
     symbol: "HK$",
     view_url:
       "https://mixin-assets-cn.zeromesh.net/mixin/attachments/1591149002-fa6704459cdb0bc1ce77c0736835b1bcf00f04bac0fa8c19a90bdbf22586f70d",
-    amount: ['HK$20.00', 'HK$100.00', 'HK$500.00'],
-    label: ["給我來杯咖啡 ☕️", "給我來盒餅乾 🍪", "給我來份披薩 🍕"]
+    amount: ['HK$20.00', 'HK$100.00', 'HK$500.00']
   },
   GBP: {
     symbol: "£",
@@ -67,7 +66,7 @@ let _countries = {
     view_url:
       "https://mixin-assets-cn.zeromesh.net/mixin/attachments/1591150494-93a2d313eb50c3e66735b4a52d954337faa6ad3409a341cfc4262aee6d411202",
     amount: ['RM20.00', 'RM100.00', 'RM500.00'],
-    label: ["Sumbang dengan membelikan saya kopi ☕️", "Sumbang dengan membeli saya sebiji kek 🍪", "Sumbang dengan membeli saya pizza 🍕"]
+    label: ["Beli saya kopi", "Belikan saya salad daging lembu", "Beli saya minum petang"]
   },
 }
 let _obj = {}
@@ -109,7 +108,6 @@ let language_currency = {
     "ja-JP"
   ],
   EUR: [
-    // ["coffee ☕️", "Donate by buying me a cake 🍪", "Donate by buying me a pizza 🍕"]
     // 德国、奥地利、卢森堡、比利时、芬兰、法国、希腊、爱尔兰、意大利、荷兰、葡萄牙、斯洛文尼亚、西班牙、马耳他、斯洛伐克、爱沙尼亚、拉脱维亚、立陶宛
     'de-DE', // 德国
     'de', // 德语
@@ -214,89 +212,7 @@ let language_amount = {}
 Object.keys(language_currency).forEach(currency => [
   language_currency[currency].forEach(language => {
     let { symbol, amount, label } = _countries[currency]
-    if (!label) {
-      switch (language) {
-        case 'de-DE':
-        case 'de':
-        case 'hsb-DE':
-        case 'dsb-DE':
-        case 'de-AT':
-          label = ['Spenden Sie, indem Sie mir einen Kaffee kaufen ☕️', 'Spenden Sie, indem Sie mir einen Kuchen kaufen 🍪', 'Spenden Sie, indem Sie mir eine Pizza kaufen 🍕']
-          break
-        case 'lb-LU':
-        case 'lb':
-        case 'de-LU':
-        case 'fr-LU':
-          label = ['Spende andeems ech mer e Kaffi kafen ☕️', 'Spende mir e Kuch ze kafen 🍪', 'Spende mir e Pizza ze kafen 🍕']
-          break
-        case 'fi-FI':
-        case 'fi':
-        case 'se-FI':
-        case 'sv-FI':
-        case 'sms-FI':
-        case 'smn-FI':
-          label = ['Lahjoita ostamalla minulle kahvia ☕️', 'Lahjoita ostamalla minulle kakku 🍪', 'Lahjoita ostamalla minulle pizza 🍕']
-          break
-        case 'fr-FR':
-        case 'fr':
-        case 'gsw-FR':
-        case 'oc-FR':
-        case 'br-FR':
-        case 'co-FR':
-        case 'fr-BE':
-          label = ["Faites un don en m'achetant un café ☕️", "Faites un don en m'achetant un gâteau 🍪", "Faites un don en m'achetant une pizza 🍕"]
-          break
-        case 'el-GR':
-        case 'el':
-          label = ['Δωρίστε αγοράζοντας έναν καφέ ☕️', 'Δωρίστε αγοράζοντας ένα κέικ 🍪', 'Δωρίστε αγοράζοντας μια πίτσα 🍕']
-          break
-        case 'ga-IE':
-        case 'ga':
-        case 'en-IE':
-          label = ['Deonaigh trí chaife a cheannach dom ☕️', 'Deonaigh trí chíste a cheannach dom 🍪', 'Deonaigh trí pizza a cheannach dom 🍕']
-          break
-        case 'it-IT':
-        case 'it':
-          label = ['Dona donandomi un caffè ☕️', 'Dona donandomi una torta 🍪', 'Dona donandomi una pizza 🍕']
-          break
-        case 'nl-NL':
-        case 'nl':
-        case 'fy-NL':
-        case 'nl-BE':
-          label = ['Doneer door koffie voor me te kopen ☕️', 'Doneer door een taart voor me te kopen 🍪', 'Doneer door een pizza voor me te kopen 🍕']
-          break
-        case 'pt-PT':
-        case 'pt':
-          label = ['Doe comprando um café para mim ☕️', 'Doe comprando um bolo para mim 🍪', 'Doe comprando uma pizza para mim 🍕']
-          break
-        case 'sl':
-        case 'sl-SI':
-          label = ['Donirajte tako, da mi kupite kavo ☕️', 'Donirajte tako, da mi kupite torto 🍪', 'Donirajte tako, da mi kupite pico 🍕']
-          break
-        case 'es-ES':
-        case 'es':
-          label = ['Done comprándome un café ☕️', 'Done comprándome un pastel 🍪', 'Done comprándome una pizza 🍕']
-          break
-        case 'sk-SK':
-        case 'sk':
-          label = ['Darujte mi nákupom kávy ☕️', 'Darujte mi nákupom koláča 🍪', 'Darujte mi nákup pizze 🍕']
-          break
-        case 'et-EE':
-        case 'et':
-          label = ['Annetage, ostes mulle kohvi ☕️', 'Annetage, ostes mulle koogi 🍪', 'Annetage, ostes mulle pitsa 🍕']
-          break
-        case 'lv-LV':
-        case 'lv':
-          label = ['Ziedo, pērkot man kafiju ☕️', 'Ziedo, pērkot man kūku 🍪', 'Ziedo, pērkot man picu 🍕']
-          break
-        case 'lt-LT':
-        case 'lt':
-          label = ['Paaukok pirkdamas man kavos ☕️', 'Paaukok pirkdamas man tortą 🍪', 'Paaukokite pirkdami man picą 🍕']
-          break
-        default:
-          label = _countries.USD.label
-      }
-    }
+    if (!label) label = _countries.USD.label
     language_amount[language] = {
       amount_conf: amount.map((item, index) => ({
         amount: item,

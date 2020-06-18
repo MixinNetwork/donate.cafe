@@ -26,7 +26,10 @@
             class="avatar"
           >{{avatar_url.split(';')[1]}}</span>
           <div :class="['avatar-list', show_menus && 'active']">
-            <span @click="click_donate_button" class="nav-list-menus-item">{{$t('header.modify')}}</span>
+            <span
+              @click="click_donate_button"
+              class="nav-list-menus-item"
+            >{{$t(`header.${has_donate ? 'modify' : 'make'}`)}}</span>
             <span @click="click_logout" class="nav-list-menus-item">{{$t('header.logout')}}</span>
           </div>
         </template>
@@ -42,10 +45,11 @@ export default {
     return {
       show_menus: false,
       home_url: process.env.VUE_APP_CLIENT,
-      avatar_url: null,
+      avatar_url: "",
       token: null,
       url: "",
-      isHome: true
+      isHome: true,
+      has_donate: false
     };
   },
   methods: {
@@ -76,6 +80,7 @@ export default {
     this.isHome = this.$route.name === "home";
     this.avatar_url = this.$ls.get("avatar_url");
     this.token = this.$ls.get("token");
+    this.has_donate = this.$ls.get("has_donate");
     this.url = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
   }
 };

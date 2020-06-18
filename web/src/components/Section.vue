@@ -22,6 +22,7 @@ section {
   padding: 0 56px;
   position: relative;
   font-family: Nunito;
+  overflow-x: hidden;
 
   h1 {
     position: relative;
@@ -131,7 +132,15 @@ section {
 
     button {
       margin: 3rem 0 10rem 0;
-      width: 247px;
+      width: 241px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    ul {
+      transform: translate(14.4px);
     }
   }
 }
