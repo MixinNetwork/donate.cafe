@@ -22,7 +22,7 @@ section {
   padding: 0 56px;
   position: relative;
   font-family: Nunito;
-  overflow-x: hidden;
+  overflow: visible;
 
   h1 {
     position: relative;

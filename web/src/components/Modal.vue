@@ -180,10 +180,11 @@ export default {
 
 .close-btn-click {
   position: absolute;
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   right: 16px;
   top: 16px;
+  cursor: pointer;
 }
 
 .step {
@@ -242,6 +243,10 @@ export default {
     &:after {
       width: 8px;
     }
+  }
+  .close-btn-click {
+    width: 24px;
+    height: 24px;
   }
 
   .step {

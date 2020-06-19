@@ -23,9 +23,8 @@ class Model extends Store {
     let { user_id, full_name, avatar_url } = user
     await this.add_user({ user_id, full_name, avatar_url, access_token })
     if (!avatar_url) avatar_url = tools.getAvatarColor(user_id) + ';' + full_name[0].toUpperCase()
-    let { donate_id } = await this.get_donate_id_by_user(user_id) || {}
-    let has_donate = donate_id && true
-    return { data: { user_id, access_token, avatar_url, addresses, has_donate } }
+    let donate_info = await this.get_donate_id_by_user(user_id) || {}
+    return { data: { user_id, access_token, avatar_url, addresses, donate_info } }
   }
 
   async save_donate(access_token, file, amount_info, currency, addresses) {
@@ -64,10 +63,12 @@ class Model extends Store {
 
 
   async init_user_by_code(code, file, amount_info, currency) {
-    let { access_token, avatar_url, error: user_error, addresses } = await this.login(code)
+    let { data: user_data, error: user_error } = await this.login(code)
     if (user_error) return { error: user_error }
-    let { donate_id, error: donate_error } = await this.save_donate(access_token, file, amount_info, currency, addresses)
+    let { access_token, avatar_url, addresses } = user_data
+    let { data: donate_data, error: donate_error } = await this.save_donate(access_token, file, amount_info, currency, addresses)
     if (donate_error) return { error: donate_error }
+    let { donate_id } = donate_data
     return { data: { access_token, donate_id, avatar_url } }
   }
 
