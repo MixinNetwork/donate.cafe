@@ -23,7 +23,7 @@ class Model extends Store {
     let { user_id, full_name, avatar_url } = user
     await this.add_user({ user_id, full_name, avatar_url, access_token })
     if (!avatar_url) avatar_url = tools.getAvatarColor(user_id) + ';' + full_name[0].toUpperCase()
-    let donate_info = await this.get_donate_id_by_user(user_id) || {}
+    let donate_info = await this.get_donate_info_by_user_id(user_id)
     return { data: { user_id, access_token, avatar_url, addresses, donate_info } }
   }
 

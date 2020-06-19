@@ -17,10 +17,19 @@ export default {
         ? await this.APIS.login(code)
         : await this.APIS.authAndUpload(code);
     if (resp && resp.access_token) {
-      let { access_token, donate_id, avatar_url, has_donate } = resp;
+      let { access_token, donate_id, avatar_url, donate_info } = resp;
       this.$ls.set("token", access_token);
       this.$ls.set("avatar_url", avatar_url);
-      if (has_donate) this.$ls.set("has_donate", has_donate);
+      if (donate_info) {
+        let { view_url, currency, amount_info, name } = donate_info;
+        if (view_url) {
+          this.$ls.set("file", view_url);
+          this.$ls.set("button", "user");
+        }
+        name && this.$ls.set("name", name);
+        this.$ls.set("currency", currency);
+        this.$ls.set("amount", amount_info);
+      }
       if (donate_id) {
         this.$ls.set("donate_id", donate_id);
         window.sessionStorage.setItem("step4", "true");
