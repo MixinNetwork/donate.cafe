@@ -1,3 +1,6 @@
+
+const { KEY_WORD } = require('../config')
+
 module.exports.ASSETS = [
   'c6d0c728-2624-429b-8e0d-d9d19b6592fa', // BTC
   '43d61dcd-e413-450d-80b8-101d5e903357', // ETH
@@ -45,88 +48,7 @@ module.exports.CURRENCY = {
 
 module.exports.DEFAULT_VIEW_URL = 'https://donate.cafe/donate.svg'
 
-module.exports.RESERVED_WORD = {
-  // key
-  btc_price: true,
-  donate_id: true,
-  currency: true,
-  fiats: true,
-  button: true,
-  amount: true,
-  token: true,
-  avatar_url: true,
-  name: true,
-  view_url: true,
-  file: true,
-  file_change: true,
-  // coin key
-  bitcoin: true,
-  bitcoincash: true,
-  bitcoinsv: true,
-  dash: true,
-  binancecoin: true,
-  stellar: true,
-
-  pressone: true,
-  tether: true,
-  siacoin: true,
-  bigone: true,
-  foxone: true,
-  exinone: true,
-  zcash: true,
-  hyperion: true,
-  vcash: true,
-  cosmos: true,
-  binance: true,
-  huobi: true,
-  ripple: true,
-  dogecoin: true,
-  horizen: true,
-  nervos: true,
-  decred: true,
-  monero: true,
-  bytom: true,
-  torrent: true,
-  google: true,
-  microsoft: true,
-  stellar: true,
-  bitfinex: true,
-  ravencoin: true,
-  kyber: true,
-  cocos: true,
-  polymath: true,
-  meetone: true,
-  snapchat: true,
-  messenger: true,
-  wechat: true,
-  safari: true,
-  bitpie: true,
-  imtoken: true,
-  bitpay: true,
-  coinbase: true,
-  ownbit: true,
-  dlive: true,
-  instagram: true,
-  vimeo: true,
-  twitter: true,
-  facebook: true,
-  paypal: true,
-  venmo: true,
-  skype: true,
-  ethereum: true,
-  litecoin: true,
-  cardano: true,
-  tezos: true,
-  crypto: true,
-  chainlink: true,
-  ontology: true,
-  zilliqa: true,
-  algorand: true,
-  augur: true,
-  komodo: true,
-  steem: true,
-  bitshares: true,
-}
+module.exports.RESERVED_WORD = KEY_WORD
 
 module.exports.CACHE_TIME = {
   donate_info: 1000 * 60 * 10,
