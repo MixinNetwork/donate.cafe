@@ -35,9 +35,9 @@ module.exports.ASSET_EXTRA_DATE = [
 
 module.exports.CURRENCY = {
   USD: { symbol: "$", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
-  CNY: { symbol: "¥", message: ["捐赠", "谢谢你的捐款", "在 Mixin Messenger 中付款"] },
+  CNY: { symbol: "¥", message: ["打赏", "谢谢你的打赏", "在 Mixin Messenger 中付款"] },
   JPY: { symbol: "¥", message: ["寄付", "寄付してくれてありがとう", "Mixin Messengerで支払う"] },
-  HKD: { symbol: "HK$", message: ["捐贈", "謝謝你的捐款", "在 Mixin Messenger 中付款"] },
+  HKD: { symbol: "HK$", message: ["打賞", "謝謝你的打賞", "在 Mixin Messenger 中付款"] },
   KRW: { symbol: "₩", message: ["기부", "기부 해 주셔서 감사합니다"] },
   AUD: { symbol: "A$", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
   EUR: { symbol: "€", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
