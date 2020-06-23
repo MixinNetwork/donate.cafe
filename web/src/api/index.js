@@ -64,6 +64,7 @@ export default {
     return await request.get('/getFiats')
   },
   async getDonate(name) {
+    name = name.toLowerCase()
     let params = { name, code: _vm.$ls.get(name) }
     let t = await request.post('/getDonate', params)
     if (!t || !t.date) return false
