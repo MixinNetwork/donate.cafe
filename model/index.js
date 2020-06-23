@@ -74,7 +74,8 @@ class Model extends Store {
 
 
   async set_user(access_token, donate_id, name, res) {
-    if (RESERVED_WORD[name.toLowerCase()]) return res.json({ error: 'name_repeat' })
+    name = name.toLowerCase()
+    if (RESERVED_WORD[name]) return res.json({ error: 'name_repeat' })
     if (name.length < 5) return res.json({ error: 'name_length' })
     const self = this
     uploadQueue.push(donate_id, t)
@@ -93,6 +94,7 @@ class Model extends Store {
   }
 
   async get_donate_info({ name, id, url, code }) {
+    name = name.toLowerCase()
     let donate_info = name ? await this.getDonateByName(name) : await this.getDonate(id)
     if (!donate_info) return false
     let tmpObj = {}
