@@ -81,7 +81,7 @@ export default {
     this.avatar_url = this.$ls.get("avatar_url");
     this.token = this.$ls.get("token");
     this.has_donate = this.$ls.get("name");
-    this.url = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
+    this.url = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=SNAPSHOTS:READ+PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
   }
 };
 </script>
