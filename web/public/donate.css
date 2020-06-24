@@ -63,7 +63,7 @@
   position: relative;
   cursor: pointer;
 
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 .donate-container .donate-select-asset-list {
@@ -172,7 +172,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  margin: 72px 0 0 0;
+  margin: 68px 0 0 0;
 }
 
 .--donate-button-plug h4 {
