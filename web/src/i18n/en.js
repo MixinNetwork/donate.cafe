@@ -44,7 +44,7 @@ export default {
     }
   },
   error: {
-    id: "Donate Link is Ivalid",
+    id: "Donate Link is Invalid",
     auth: "Authentication Failed",
     asset: "Asset Authentication Failed",
     server: "Server Error",

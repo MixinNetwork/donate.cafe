@@ -94,8 +94,7 @@ class Model extends Store {
   }
 
   async get_donate_info({ name, id, url, code }) {
-    name = name.toLowerCase()
-    let donate_info = name ? await this.getDonateByName(name) : await this.getDonate(id)
+    let donate_info = name ? await this.getDonateByName(name.toLowerCase()) : await this.getDonate(id)
     if (!donate_info) return false
     let tmpObj = {}
     Object.assign(tmpObj, donate_info)
