@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       show_modal: false,
-      show_content: false,
+      show_content: "",
       is_donate: true
     };
   },
