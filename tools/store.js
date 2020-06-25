@@ -1,6 +1,7 @@
 const DB = require('../db')
 const APIS = require('../api')
 const { ASSETS, DEFAULT_VIEW_URL, CACHE_TIME } = require('../tools/const')
+const { getAvatarColor } = require('../tools')
 
 class Store extends DB {
   constructor() {
@@ -30,6 +31,7 @@ class Store extends DB {
     if (!this.cache_donate_list[donate_id] || this.cache_donate_list[donate_id].updated) {
       let dataInfo = await this.get_donate(donate_id)
       if (!dataInfo) return false
+      if (!dataInfo.avatar_url) dataInfo.avatar_url = getAvatarColor(dataInfo.user_id)
       if (!dataInfo.view_url) dataInfo.view_url = DEFAULT_VIEW_URL
       this.cache_donate_list[donate_id] = {
         data: dataInfo,
@@ -79,6 +81,7 @@ class Store extends DB {
 
   async _updateAssetsPrice() {
     let asset_list = await APIS.getAsset()
+    if (!asset_list) return
     for (let i = 0; i < ASSETS.length; i++) {
       let asset_id = ASSETS[i]
       let asset_item = asset_list.find(item => item.asset_id === asset_id)
@@ -97,6 +100,7 @@ class Store extends DB {
 
   async _updateFiats() {
     let fiat_list = await APIS.getFiats()
+    if (!fiat_list) return
     let tmpObj = {}
     for (let i = 0; i < fiat_list.length; i++) {
       let { code, rate } = fiat_list[i]

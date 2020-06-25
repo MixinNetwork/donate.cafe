@@ -13,7 +13,7 @@
 
     <div ref="choose" :class="['img', !button_mode_default && 'choose-img']">
       <template v-if="button_mode_default">
-        <img src="https://taskwall.zeromesh.net/donate.svg" />
+        <img src="@/assets/img/donate.svg" />
       </template>
       <template v-else>
         <input type="file" accept="image/*" @change="croppie" />
@@ -59,6 +59,7 @@ export default {
           this.$ls.set("file_change", "1");
       } else {
         this.$ls.set("button", "default");
+        this.$ls.set("file_change", "1");
       }
       this.$emit("nextStep");
     },
@@ -217,7 +218,7 @@ button {
     transform: initial;
     display: flex;
     flex-direction: column;
-    margin-top: 5rem;
+    margin-top: 70px;
 
     span {
       font-size: 1.125rem;
@@ -238,12 +239,12 @@ button {
 
   .img {
     max-width: 270px;
-    height: 230px;
+    height: 220px;
   }
 
   button {
     display: block;
-    margin: 3rem auto 1rem auto;
+    margin: 38px auto 1rem auto;
   }
 }
 </style>

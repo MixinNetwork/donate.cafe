@@ -11,6 +11,7 @@ module.exports = {
   UPDATE_DONATE: 'UPDATE donates SET view_url=$2, currency=$3, amount_info=$4, addresses=$5 WHERE donate_id=$1',
   UPDATE_DONATE_WITHOUT_VIEW_URL: 'UPDATE donates SET currency=$2, amount_info=$3, addresses=$4 WHERE donate_id=$1',
   GET_DONATE: 'SELECT users.user_id, full_name, avatar_url, donates.* from donates LEFT JOIN users ON donates.user_id=users.user_id WHERE donate_id=$1',
+  GET_DONATE_INFO: 'SELECT view_url, currency, amount_info, name FROM donates WHERE user_id=$1',
   GET_DONATE_ID_BY_NAME: 'SELECT donate_id from donates WHERE name=$1',
   GET_DONATE_ID_BY_USER: 'SELECT donate_id from donates WHERE user_id=$1',
 

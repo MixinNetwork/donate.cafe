@@ -1,27 +1,35 @@
 <template>
   <header>
     <a class="left" :href="home_url">
-      <img alt="Vue logo" src="@/assets/img/logo.svg" />
+      <img alt="logo" src="@/assets/img/logo.png" />
       <span>{{$t('header.title')}}</span>
     </a>
-    <div :class="['right', isHome && avatar_url && 'avatar']">
-      <template v-if="!isHome">
-        <img class="menus" @click.stop="toggle_menus" src="@/assets/img/menus.svg" />
-        <div :class="['nav-list-menus-list', show_menus && 'active']">
-          <a href="https://mixin.one/messenger" class="nav-list-menus-item">Messenger</a>
-        </div>
-      </template>
-      <template v-else>
-        <template v-if="!avatar_url">
+    <div :class="['right', isHome && token && 'avatar']">
+      <template v-if="isHome">
+        <template v-if="!token">
           <img class="menus" @click.stop="toggle_menus" src="@/assets/img/menus.svg" />
           <div :class="['nav-list-menus-list', show_menus && 'active']">
-            <a :href="url" class="nav-list-menus-item">{{$t('header.login')}}</a>
+            <a :href="url" @click="click_to_auth" class="nav-list-menus-item">{{$t('header.login')}}</a>
           </div>
         </template>
         <template v-else>
-          <img class="avatar" @click.stop="toggle_menus" :src="avatar_url" />
+          <img
+            class="avatar"
+            @click.stop="toggle_menus"
+            v-if="avatar_url.startsWith('http')"
+            :src="avatar_url"
+          />
+          <span
+            v-else
+            :style="`background-color:${avatar_url.split(';')[0]}`"
+            @click.stop="toggle_menus"
+            class="avatar"
+          >{{avatar_url.split(';')[1]}}</span>
           <div :class="['avatar-list', show_menus && 'active']">
-            <span @click="click_donate_button" class="nav-list-menus-item">{{$t('header.modify')}}</span>
+            <span
+              @click="click_donate_button"
+              class="nav-list-menus-item"
+            >{{$t(`header.${has_donate ? 'modify' : 'make'}`)}}</span>
             <span @click="click_logout" class="nav-list-menus-item">{{$t('header.logout')}}</span>
           </div>
         </template>
@@ -37,9 +45,11 @@ export default {
     return {
       show_menus: false,
       home_url: process.env.VUE_APP_CLIENT,
-      avatar_url: null,
+      avatar_url: "",
+      token: null,
       url: "",
-      isHome: true
+      isHome: true,
+      has_donate: false
     };
   },
   methods: {
@@ -51,6 +61,9 @@ export default {
         this.show_menus = false;
         document.onclick = null;
       }
+    },
+    click_to_auth() {
+      window.location.href = this.url;
     },
     click_donate_button() {
       this.$emit("open");
@@ -66,7 +79,9 @@ export default {
   mounted() {
     this.isHome = this.$route.name === "home";
     this.avatar_url = this.$ls.get("avatar_url");
-    this.url = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
+    this.token = this.$ls.get("token");
+    this.has_donate = this.$ls.get("name");
+    this.url = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=SNAPSHOTS:READ+PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
   }
 };
 </script>
@@ -93,6 +108,8 @@ header {
   img {
     margin-right: 0.56rem;
     cursor: pointer;
+    width: 24px;
+    height: 24px;
   }
 
   span {
@@ -105,10 +122,6 @@ header {
   position: relative;
 }
 
-.right.avatar {
-  height: 40px;
-}
-
 .nav-list-menus-list {
   display: block;
 }
@@ -119,8 +132,20 @@ header {
 }
 
 .avatar {
-  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  box-sizing: border-box;
+
+  font-size: 1rem;
+
+  color: #fff;
+
+  border: 3px solid rgba($color: #fff, $alpha: 0.3);
+  border-radius: 50%;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -143,7 +168,7 @@ header {
     display: block;
     text-align: left;
     padding-right: 20px;
-  cursor: pointer;
+    cursor: pointer;
     margin-left: 20px;
     font-size: 12px;
     line-height: 40px;

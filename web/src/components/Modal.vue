@@ -1,9 +1,10 @@
 <template>
   <div @click.stop class="modal" v-if="show_modal">
     <div class="mask"></div>
-    <div class="content">
-      <span @click="click_close_btn" class="close-btn"></span>
-      <div v-if="show_faq" class="faq" v-html="$t('home.faqDesc')"></div>
+    <div :class="['content', show_content]">
+      <span class="close-btn"></span>
+      <span @click="click_close_btn" class="close-btn-click"></span>
+      <div v-if="show_content" class="content-html" v-html="$t(`home.modal.${show_content}.html`)"></div>
       <div v-else class="step">
         <h2>{{$t(`home.step.title[${active_step}]`)}}</h2>
         <p>{{$t('home.step.number', {number: active_step})}}</p>
@@ -31,9 +32,20 @@ export default {
       type: Boolean,
       default: false
     },
-    show_faq: {
-      type: Boolean,
-      default: false
+    show_content: {
+      type: String,
+      default: ""
+    }
+  },
+  watch: {
+    show_content(val) {
+      if (val)
+        document.onkeydown = e => {
+          if (e.keyCode === 27) {
+            this.$emit("close");
+          }
+        };
+      else document.onkeydown = null;
     }
   },
   data() {
@@ -88,7 +100,7 @@ export default {
   font-family: Nunito;
 }
 
-.faq {
+.content-html {
   margin: 20px 0;
   padding: 0 30px;
   box-sizing: border-box;
@@ -127,6 +139,11 @@ export default {
   }
 }
 
+.about {
+  height: 430px;
+}
+
+.close-btn-click,
 .close-btn {
   position: absolute;
   right: 20px;
@@ -134,6 +151,8 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+}
+.close-btn {
   background-color: #eaeaea;
   cursor: pointer;
 
@@ -157,6 +176,15 @@ export default {
   &:after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+}
+
+.close-btn-click {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 16px;
+  top: 16px;
+  cursor: pointer;
 }
 
 .step {
@@ -202,6 +230,7 @@ export default {
   .content {
     width: calc(100% - 40px);
     height: calc(100% - 40px);
+    min-height: 460px;
     max-height: 675px;
     overflow: auto;
   }
@@ -215,6 +244,10 @@ export default {
       width: 8px;
     }
   }
+  .close-btn-click {
+    width: 24px;
+    height: 24px;
+  }
 
   .step {
     width: 100%;
@@ -223,6 +256,15 @@ export default {
       margin-top: 3rem;
       font-size: 1.5rem;
     }
+  }
+
+  .about {
+    max-height: 430px;
+  }
+}
+@media screen and (max-width: 32rem) {
+  .about {
+    max-height: 675px;
   }
 }
 </style>

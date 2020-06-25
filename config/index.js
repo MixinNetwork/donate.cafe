@@ -10,6 +10,4 @@ function getENVConfig() {
   }
 }
 
-const { DATABASE_CONFIG, CLIENT_CONFIG } = require(getENVConfig())
-
-module.exports = { DATABASE_CONFIG, CLIENT_CONFIG }
+module.exports = { ...require(getENVConfig()), ...require('./config_base') }

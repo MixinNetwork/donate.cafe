@@ -165,7 +165,6 @@ async function initCurrency(currency) {
     symbol: countries[currency].symbol,
     rate: this.country_info[currency].rate || rate[currency]
   };
-  this.$ls.set("currency", currency);
 }
 
 async function initAmountConfig(amount_config) {
@@ -203,6 +202,7 @@ async function initAmountConfig(amount_config) {
       box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.06);
       border-radius: 16px;
       cursor: pointer;
+      border: 3px solid transparent;
 
       p {
         cursor: pointer;
@@ -229,7 +229,6 @@ async function initAmountConfig(amount_config) {
 
         color: #4c4471;
 
-        word-break: break-all;
         opacity: 0.9;
       }
 
@@ -400,8 +399,7 @@ button {
   .step2 {
     width: 100%;
     box-sizing: border-box;
-    padding: 0;
-    padding-left: 2rem;
+    padding: 0 2rem;
 
     & > ul {
       display: flex;
@@ -419,8 +417,9 @@ button {
       }
 
       li {
-        min-width: 147px;
-        padding: 20px 0 0 18px;
+        min-width: 120px;
+        height: 117px;
+        padding: 20px 18px 10px 18px;
         margin: 1rem 0;
         margin-right: 1.2rem;
 
@@ -467,11 +466,6 @@ button {
     flex-direction: column;
     margin-top: 1rem;
 
-    .amount,
-    .label {
-      margin-right: 30px;
-    }
-
     .currency {
       ul {
         left: initial;
@@ -482,6 +476,7 @@ button {
 
     .currency,
     .amount {
+      margin-right: 0;
       max-width: initial;
     }
 

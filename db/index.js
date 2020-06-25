@@ -56,7 +56,11 @@ class DB {
   }
 
   async get_donate_id_by_user(user_id) {
-    return (await this.query(this.SQL.GET_DONATE_ID_BY_USER, [user_id]))[0] || {}
+    return (await this.query(this.SQL.GET_DONATE_ID_BY_USER, [user_id]))[0]
+  }
+
+  async get_donate_info_by_user_id(user_id) {
+    return (await this.query(this.SQL.GET_DONATE_INFO, [user_id]))[0]
   }
 
   //  statistics_daily

@@ -22,8 +22,7 @@ app.get('/api/login', async (req, res) => {
   let { code } = req.query
   try {
     let data = await model.login(code)
-    if (data.error) return res.json(data)
-    return res.json({ data })
+    return res.json(data)
   } catch (e) {
     console.error('/login', e)
     return res.json({ error: 'server' })
@@ -35,8 +34,7 @@ app.post('/api/saveDonate', async (req, res) => {
   try {
     let access_token = req.headers.authorization.split(' ')[1]
     let data = await model.save_donate(access_token, file, amount, currency)
-    if (data.error) return res.json(data)
-    return res.json({ data })
+    return res.json(data)
   } catch (e) {
     console.error('/authenticate', e)
     return res.json({ error: 'server' })
@@ -47,8 +45,7 @@ app.post('/api/authenticate', async (req, res) => {
   let { code, file, amount, currency } = req.body
   try {
     let data = await model.init_user_by_code(code, file, amount, currency)
-    if (data.error) return res.json(data)
-    return res.json({ data })
+    return res.json(data)
   } catch (e) {
     console.error('/authenticate', e)
     return res.json({ error: 'server' })
@@ -94,7 +91,7 @@ app.post('/api/setUser', async (req, res) => {
     let access_token = req.headers.authorization.split(' ')[1]
     await model.set_user(access_token, donate_id, name, res)
   } catch (e) {
-    console.error('/getFiats', e)
+    console.error('/setUser', e)
     return res.json({ error: 'server' })
   }
 })

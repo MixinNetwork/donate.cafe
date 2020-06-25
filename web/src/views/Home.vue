@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-    <Header @open="change_modal(true, true)" :is_home="true" />
+    <Header @open="change_modal(true)" :is_home="true" />
 
-    <Section @open="change_modal(true, true)" />
-    <Footer @show_faq="change_modal(true)" />
+    <Section @open="change_modal(true)" />
+    <Footer @show_content="change_modal" />
     <transition name="fade">
-      <Modal :show_modal="show_modal" :show_faq="show_faq" @close="change_modal(false)" />
+      <Modal :show_modal="show_modal" :show_content="show_content" @close="change_modal(false)" />
     </transition>
   </div>
 </template>
@@ -20,14 +20,19 @@ export default {
   data() {
     return {
       show_modal: false,
-      show_faq: false,
+      show_content: "",
       is_donate: true
     };
   },
   methods: {
-    change_modal(status, faq_status) {
-      this.show_modal = status;
-      this.show_faq = faq_status ? false : status;
+    change_modal(status) {
+      if (typeof status === "string") {
+        this.show_content = status;
+        this.show_modal = true;
+      } else {
+        this.show_content = "";
+        this.show_modal = status;
+      }
     }
   },
   async mounted() {
