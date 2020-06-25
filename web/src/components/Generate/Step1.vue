@@ -59,6 +59,7 @@ export default {
           this.$ls.set("file_change", "1");
       } else {
         this.$ls.set("button", "default");
+        this.$ls.set("file_change", "1");
       }
       this.$emit("nextStep");
     },
