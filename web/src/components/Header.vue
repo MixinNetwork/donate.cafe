@@ -92,6 +92,7 @@ header {
   font-family: Nunito;
   font-style: normal;
   font-weight: 600;
+  height: 40px;
 }
 
 .left {
