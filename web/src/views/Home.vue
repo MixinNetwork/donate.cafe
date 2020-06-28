@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <Header @open="change_modal(true)" :is_home="true" />
-
+    <Header @open="change_modal(true)" />
     <Section @open="change_modal(true)" />
     <Footer @show_content="change_modal" />
     <transition name="fade">
@@ -11,30 +10,11 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
 import Section from "@/components/Section";
-import Footer from "@/components/Footer";
-import Modal from "@/components/Modal";
+import Modal from "@/mixin/Modal";
 export default {
-  components: { Header, Section, Footer, Modal },
-  data() {
-    return {
-      show_modal: false,
-      show_content: "",
-      is_donate: true
-    };
-  },
-  methods: {
-    change_modal(status) {
-      if (typeof status === "string") {
-        this.show_content = status;
-        this.show_modal = true;
-      } else {
-        this.show_content = "";
-        this.show_modal = status;
-      }
-    }
-  },
+  components: { Section },
+  mixins: [Modal],
   async mounted() {
     window._vm = this;
     let step4 = window.sessionStorage.getItem("step4");

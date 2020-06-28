@@ -18,6 +18,7 @@
 <script>
 import Step1 from "@/components/Donate/Step1";
 import Step2 from "@/components/Donate/Step2";
+import tools from "@/assets/js/tools";
 export default {
   components: { Step1, Step2 },
   data() {
@@ -41,6 +42,7 @@ export default {
     let data = await this.APIS.getDonate(name);
     if (!data) return toHome.call(this);
     this.donate_info = data;
+    tools.setTitleAndDescription(data);
     if (query.prefer) {
       let { prefer } = query;
       let { addresses } = data;
