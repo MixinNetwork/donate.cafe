@@ -91,7 +91,8 @@ section {
 
 @media screen and (max-width: 67.5rem) {
   section.en h1 {
-    max-width: 290px;
+    max-width: 300px;
+    text-align: left;
 
     &:before {
       font-size: 80px;
@@ -140,7 +141,7 @@ section {
     }
 
     ul {
-      transform: translate(14.4px);
+      margin-left: 14.4px;
     }
   }
 }

@@ -26,10 +26,6 @@
             class="avatar"
           >{{avatar_url.split(';')[1]}}</span>
           <div :class="['avatar-list', show_menus && 'active']">
-            <span
-              @click="click_donate_button"
-              class="nav-list-menus-item"
-            >{{$t(`header.${has_donate ? 'modify' : 'make'}`)}}</span>
             <span @click="click_logout" class="nav-list-menus-item">{{$t('header.logout')}}</span>
           </div>
         </template>
@@ -48,8 +44,7 @@ export default {
       avatar_url: "",
       token: null,
       url: "",
-      isHome: true,
-      has_donate: false
+      isHome: true
     };
   },
   methods: {
@@ -80,7 +75,6 @@ export default {
     this.isHome = this.$route.name === "home";
     this.avatar_url = this.$ls.get("avatar_url");
     this.token = this.$ls.get("token");
-    this.has_donate = this.$ls.get("name");
     this.url = `https://mixin.one/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=SNAPSHOTS:READ+PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
   }
 };
@@ -200,8 +194,7 @@ header {
 
 .avatar-list {
   right: -2px;
-  top: 50px;
-  padding: 10px 0;
+  top: 40px;
 }
 
 @media screen and (max-width: 67.5rem) {

@@ -38,7 +38,7 @@ export default {
 
   button {
     margin-top: 80px;
-    width: 286px;
+    width: 220px;
   }
 
   a {
@@ -64,7 +64,7 @@ export default {
 
     button {
       margin: 2.8rem 0 1rem 0;
-      width: 266px;
+      width: 200px;
     }
 
     a {

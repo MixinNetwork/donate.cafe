@@ -61,7 +61,7 @@ function getJsCode(resp) {
 <div class="--donate-button"
      data-button-id="${donate_id}"
 ></div>
-<script src="https://donate.cafe/donate.js"><\/script>`;
+<script src="https://donate.cafe/donate.js" async><\/script>`;
 }
 
 function getImageCode(resp) {

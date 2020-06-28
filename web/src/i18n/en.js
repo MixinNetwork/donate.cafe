@@ -7,7 +7,7 @@ export default {
     make: "Make My Donate Button"
   },
   home: {
-    desc: "Accept <b>Bitcoin</b> Donate Now",
+    desc: "Accept <b>Bitcoin</b> Donations Now",
     props: [
       "Fast - Go live in minutes, not days",
       "Free - Free to receive cryptocurrency donations",
@@ -25,7 +25,7 @@ export default {
       }
     },
     step: {
-      title: ["", "Choose Button Style", "Set Amount", "Bind Receive Wallet", "Set Username", "Your Donate Html"],
+      title: ["", "Choose Button Style", "Set Amount", "Connect Wallet", "Set Username", "Your Donate Html"],
       number: "Step {number} of 5",
       '1default': "Default button style",
       "1notice": "The file must not be larger than 3M",
@@ -34,8 +34,8 @@ export default {
       "2currency": "Currency",
       "2amount": "Amount",
       "2label": "Label",
-      "3info": " Donate Button needs to bind your Mixin Messenger to accept donations and display your avatar and name to your fans. ",
-      "3button": "Connect to Mixin Messnger",
+      "3info": " Donate Button needs to connect your Mixin Messenger to accept donations and display your avatar and name to your fans. ",
+      "3button": "Connect",
       "3noMessenger": "No Mixin Messenger yet?",
       "5copy": "Copy Code",
       "5select": ["JS Style", "Image & Link", "Text & Link"],

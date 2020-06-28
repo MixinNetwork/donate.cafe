@@ -196,17 +196,6 @@ p {
   margin-top: 40px;
   width: 160px;
   height: 40px;
-  outline: none;
-  border: 0;
-  background: #4c4471;
-  box-shadow: 0px 6px 10px rgba(75, 124, 221, 0.15);
-  border-radius: 40px;
-  font-family: Nunito;
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 22px;
-  color: #fff;
-  cursor: pointer;
 }
 
 @media screen and (max-width: 480px) {
