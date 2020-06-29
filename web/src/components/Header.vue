@@ -162,10 +162,9 @@ header {
   .nav-list-menus-item {
     display: block;
     text-align: left;
-    padding-right: 20px;
+    padding: 0 30px 0 20px;
     cursor: pointer;
-    margin-left: 20px;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 40px;
     color: #333333;
     border-radius: 6px 6px 4px 4px;
