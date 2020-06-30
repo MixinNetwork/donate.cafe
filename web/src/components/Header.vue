@@ -164,7 +164,7 @@ header {
     text-align: left;
     padding: 0 30px 0 20px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 40px;
     color: #333333;
     border-radius: 6px 6px 4px 4px;

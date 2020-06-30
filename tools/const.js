@@ -46,7 +46,7 @@ module.exports.CURRENCY = {
   MYR: { symbol: "RM", message: ["Donate", "Thank you for donating", "Pay in Mixin Messenger"] },
 }
 
-module.exports.DEFAULT_VIEW_URL = 'https://donate.cafe/donate.svg'
+module.exports.DEFAULT_VIEW_URL = 'https://newbie.zeromesh.net/donate.6.30.svg'
 
 module.exports.RESERVED_WORD = KEY_WORD
 
