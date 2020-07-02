@@ -32,7 +32,8 @@ class Store extends DB {
       let dataInfo = await this.get_donate(donate_id)
       if (!dataInfo) return false
       if (!dataInfo.avatar_url) dataInfo.avatar_url = getAvatarColor(dataInfo.user_id)
-      if (!dataInfo.view_url) dataInfo.view_url = DEFAULT_VIEW_URL
+      if (!dataInfo.view_url || dataInfo.view_url === 'https://donate.cafe/donate.svg')
+        dataInfo.view_url = DEFAULT_VIEW_URL
       this.cache_donate_list[donate_id] = {
         data: dataInfo,
         timer: null
