@@ -11,6 +11,7 @@
       :donate_info="donate_info"
       :active_asset_idx="active_asset_idx"
       :active_amount_idx="active_amount_idx"
+      :mixin_context="mixin_context"
     ></Step2>
   </div>
 </template>
@@ -26,7 +27,8 @@ export default {
       show_state: -1,
       active_asset_idx: 0,
       active_amount_idx: 0,
-      donate_info: {}
+      donate_info: {},
+      mixin_context: false
     };
   },
   methods: {
@@ -36,10 +38,11 @@ export default {
     }
   },
   async mounted() {
+    if (tools.environment()) this.mixin_context = true;
     let { params = {}, query } = this.$route;
     let { name } = params;
     if (!name) return toHome.call(this);
-    let data = await this.APIS.getDonate(name);
+    let data = await this.APIS.getDonate(name, this.mixin_context);
     if (!data) return toHome.call(this);
     this.donate_info = data;
     tools.setTitleAndDescription(data);

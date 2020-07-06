@@ -134,7 +134,7 @@ class Tools {
         }
       default:
         return {
-          client_host: 'http://192.168.0.109:8080/',
+          client_host: 'http://192.168.2.196:8080/',
         }
     }
   }

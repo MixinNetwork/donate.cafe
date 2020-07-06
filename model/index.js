@@ -2,7 +2,7 @@
 const APIS = require('../api')
 const tools = require('../tools')
 const Store = require('../tools/store')
-const { ASSET_EXTRA_DATE, ASSETS, CURRENCY, DEFAULT_VIEW_URL, RESERVED_WORD } = require('../tools/const')
+const { ASSET_EXTRA_DATA, ASSETS, CURRENCY, DEFAULT_VIEW_URL, RESERVED_WORD } = require('../tools/const')
 const { uploadQueue } = require('../tools/queue')
 const ADD = 0
 const EDIT = 1
@@ -93,14 +93,15 @@ class Model extends Store {
     }
   }
 
-  async get_donate_info({ name, id, url, code }) {
+  async get_donate_info({ name, id, url, code, is_mixin }) {
     let donate_info = name ? await this.getDonateByName(name.toLowerCase()) : await this.getDonate(id)
     if (!donate_info) return false
     let tmpObj = {}
     Object.assign(tmpObj, donate_info)
     tmpObj.addresses = tmpObj.addresses.map((item, i) => (
-      { destination: item, price: this.price_list[i], asset_id: ASSETS[i], ...ASSET_EXTRA_DATE[i] }
+      { destination: item, price: this.price_list[i], asset_id: ASSETS[i], ...ASSET_EXTRA_DATA[i] }
     ))
+    if (!is_mixin) tmpObj.addresses.splice(1, 2)
     let currency = { fiats: this.fiat_list[tmpObj.currency], ...CURRENCY[tmpObj.currency] }
     let date = new Date().toISOString().slice(0, 10)
     if (code !== date) {

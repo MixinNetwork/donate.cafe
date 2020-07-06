@@ -65,10 +65,9 @@ app.post('/api/clickDonateBtn', async (req, res) => {
 })
 
 app.post('/api/getDonate', async (req, res) => {
-  let { name, code, id } = req.body
   try {
     let url = req.headers.referer || ''
-    let data = await model.get_donate_info({ name, id, url, code })
+    let data = await model.get_donate_info({ url, ...req.body })
     return res.json(data ? { data } : { error: 'server' })
   } catch (e) {
     console.error('/getDonate', e)
