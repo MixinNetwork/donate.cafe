@@ -29,18 +29,6 @@ app.get('/api/login', async (req, res) => {
   }
 })
 
-app.post('/api/saveDonate', async (req, res) => {
-  let { file, amount, currency } = req.body
-  try {
-    let access_token = req.headers.authorization.split(' ')[1]
-    let data = await model.save_donate(access_token, file, amount, currency)
-    return res.json(data)
-  } catch (e) {
-    console.error('/authenticate', e)
-    return res.json({ error: 'server' })
-  }
-})
-
 app.post('/api/authenticate', async (req, res) => {
   let { code, file, amount, currency } = req.body
   try {
@@ -48,6 +36,40 @@ app.post('/api/authenticate', async (req, res) => {
     return res.json(data)
   } catch (e) {
     console.error('/authenticate', e)
+    return res.json({ error: 'server' })
+  }
+})
+
+app.get('/api/getFiats', async (req, res) => {
+  try {
+    return res.json({ data: model.get_fiats() })
+  } catch (e) {
+    console.error('/getFiats', e)
+    return res.json({ error: 'server' })
+  }
+})
+
+app.post('/api/saveDonate', async (req, res) => {
+  let { file, amount, currency } = req.body
+  try {
+    if (!req.headers.authorization) return res.json({ error: 'auth' })
+    let access_token = req.headers.authorization.split(' ')[1]
+    let data = await model.save_donate(access_token, file, amount, currency)
+    return res.json(data)
+  } catch (e) {
+    console.error('/saveDonate', e)
+    return res.json({ error: 'server' })
+  }
+})
+
+app.post('/api/setUser', async (req, res) => {
+  try {
+    if (!req.headers.authorization) return res.json({ error: 'auth' })
+    let { name, donate_id } = req.body
+    let access_token = req.headers.authorization.split(' ')[1]
+    await model.set_user(access_token, donate_id, name, res)
+  } catch (e) {
+    console.error('/setUser', e)
     return res.json({ error: 'server' })
   }
 })
@@ -75,25 +97,6 @@ app.post('/api/getDonate', async (req, res) => {
   }
 })
 
-app.get('/api/getFiats', async (req, res) => {
-  try {
-    return res.json({ data: model.get_fiats() })
-  } catch (e) {
-    console.error('/getFiats', e)
-    return res.json({ error: 'server' })
-  }
-})
-
-app.post('/api/setUser', async (req, res) => {
-  try {
-    let { name, donate_id } = req.body
-    let access_token = req.headers.authorization.split(' ')[1]
-    await model.set_user(access_token, donate_id, name, res)
-  } catch (e) {
-    console.error('/setUser', e)
-    return res.json({ error: 'server' })
-  }
-})
 
 
 app.listen(9095, () => {
