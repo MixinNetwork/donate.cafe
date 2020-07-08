@@ -61,6 +61,10 @@ export default {
     active_asset_idx: {
       type: Number,
       default: 0
+    },
+    mixin_context: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -72,7 +76,6 @@ export default {
       ex_timer: null,
       paid: false,
       client_url: process.env.VUE_APP_CLIENT,
-      mixin_context: false,
       address: ""
     };
   },
@@ -114,7 +117,6 @@ export default {
   },
   mounted() {
     this.click_asset(null, this.active_asset_idx);
-    if (tools.environment()) this.mixin_context = true;
   }
 };
 
@@ -326,7 +328,7 @@ canvas {
 
 .powered {
   position: absolute;
-  bottom: 50px;
+  bottom: 35px;
   display: flex;
   align-items: center;
   font-size: 12px;
@@ -358,10 +360,8 @@ canvas {
 
 @media screen and (max-width: 480px) {
   .address {
-    max-width: calc(100% - 40px);
-  }
-  .powered {
-    bottom: 35px;
+    margin: 0 20px 32px 20px;
+    box-sizing: border-box;
   }
 }
 </style>

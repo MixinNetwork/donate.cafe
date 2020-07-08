@@ -40,8 +40,7 @@ footer {
   }
 
   li {
-    margin-right: 108px;
-    margin-bottom: 50px;
+    margin: 20px 108px 30px 0;
 
     &:last-child {
       margin-right: 0;

@@ -1,4 +1,4 @@
-module.exports.DATABASE_CONFIG = {
+exports.DATABASE_CONFIG = {
   host: 'localhost',
   port: 5432,
   user: 'neo',
@@ -6,7 +6,7 @@ module.exports.DATABASE_CONFIG = {
   database: 'donate'
 }
 
-module.exports.CLIENT_CONFIG = {
+exports.CLIENT_CONFIG = {
   identity_number: '',
   client_id: '',
   client_secret: '',
@@ -16,7 +16,7 @@ module.exports.CLIENT_CONFIG = {
   private_key: ''
 }
 
-module.exports.KEY_WORD = {
+exports.KEY_WORD = {
   // key
   mixin: true
 }
