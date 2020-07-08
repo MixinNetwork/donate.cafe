@@ -55,7 +55,7 @@ exports.CURRENCY = {
   MYR: { symbol: 'RM', message: ['Donate', 'Thank you for donating', 'Pay in Mixin Messenger'] },
 }
 
-exports.DEFAULT_VIEW_URL = 'https://newbie.zeromesh.net/donate.6.30.svg'
+exports.DEFAULT_VIEW_URL = 'https://newbie.zeromesh.net/donate.7.6.svg'
 
 exports.RESERVED_WORD = KEY_WORD
 
