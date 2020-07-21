@@ -48,6 +48,11 @@ class Store extends DB {
     this.cache_statistics_daily[donate_id][date].click++
   }
 
+  async updateSiteUV(donate_id, date) {
+    this.initStatistics(donate_id, date)
+    this.cache_statistics_daily[donate_id][date].site_uv++
+  }
+
   async updateUV(donate_id, date) {
     this.initStatistics(donate_id, date)
     this.cache_statistics_daily[donate_id][date].uv++
@@ -55,9 +60,9 @@ class Store extends DB {
 
   initStatistics(donate_id, date) {
     if (!this.cache_statistics_daily[donate_id]) {
-      this.cache_statistics_daily[donate_id] = { [date]: { uv: 0, click: 0 } }
+      this.cache_statistics_daily[donate_id] = { [date]: { uv: 0, click: 0, site_uv: 0 } }
     } else if (!this.cache_statistics_daily[donate_id][date]) {
-      this.cache_statistics_daily[donate_id][date] = { uv: 0, click: 0 }
+      this.cache_statistics_daily[donate_id][date] = { uv: 0, click: 0, site_uv: 0 }
     }
   }
 

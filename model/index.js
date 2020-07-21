@@ -106,7 +106,7 @@ class Model extends Store {
     let date = new Date().toISOString().slice(0, 10)
     if (code !== date) {
       url.startsWith(tools.getEnv().client_host) ?
-        this.updateClick(donate_info.donate_id, date) :
+        this.updateSiteUV(donate_info.donate_id, date) :
         this.updateUV(donate_info.donate_id, date)
     }
     return { date, ...tmpObj, currency }

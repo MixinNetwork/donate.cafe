@@ -64,14 +64,15 @@ class DB {
   }
 
   //  statistics_daily
-  async add_statistics_daily(donate_id, date, { uv, click }) {
+  async add_statistics_daily(donate_id, date, { uv, click, site_uv }) {
     let t = await this.query(this.SQL.GET_STATISTICS_DAILY, [donate_id, date])
-    if (!t[0]) await this.query(this.SQL.ADD_STATISTICS_DAILY, [donate_id, date, uv, click])
+    if (!t[0]) await this.query(this.SQL.ADD_STATISTICS_DAILY, [donate_id, date, uv, click, site_uv])
     else {
-      let { uv: _uv, click: _click } = t[0]
+      let { uv: _uv, click: _click, site_uv: _site_uv } = t[0]
       uv += _uv
       click += _click
-      await this.query(this.SQL.UPDATE_STATISTICS_DAILY_UV, [donate_id, date, uv, click])
+      site_uv += _site_uv
+      await this.query(this.SQL.UPDATE_STATISTICS_DAILY_UV, [donate_id, date, uv, click, site_uv])
     }
   }
 }

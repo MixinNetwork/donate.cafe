@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS statistics_daily (
   donate_id           VARCHAR(36) NOT NULL,
   click               INTEGER NOT NULL DEFAULT 0,
   uv                  INTEGER NOT NULL DEFAULT 0,
+  site_uv             INTEGER NOT NULL DEFAULT 0,
   date                DATE NOT NULL DEFAULT NOW(),
   PRIMARY KEY(donate_id, date)
 );

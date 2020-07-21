@@ -9,15 +9,15 @@ export default {
     return undefined
   },
   setTitleAndDescription(data) {
-    let { amount_info, full_name } = data
-    let titleContent = `${full_name} - DonateCafe`
-    let descriptionContent = `${amount_info[0].label} for ${full_name} with donate.cafe`
-    document.getElementsByTagName('title')[0].innerText = titleContent
+    let { amount_info, full_name, currency: { symbol } } = data
+    let title = `${full_name} - DonateCafe`
+    let description = symbol === '¥' ? `${amount_info[0].label} - 我在 donate.cafe 接受比特币打赏` : `${amount_info[0].label} with Bitcoin on donate.cafe`
+    document.getElementsByTagName('title')[0].innerText = title
     let metas = document.getElementsByTagName('meta')
     for (let i = 0, len = metas.length; i < len; i++) {
       let { name } = metas[i]
       if (name === 'description') {
-        metas[i].content = descriptionContent
+        metas[i].content = description
         break
       }
     }
