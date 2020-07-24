@@ -17,7 +17,7 @@ module.exports = {
 
   //  statistics_daily
   ADD_STATISTICS_DAILY: 'INSERT INTO statistics_daily(donate_id, date, uv, click, site_uv) VALUES($1::varchar, $2::DATE, $3::INTEGER, $4::INTEGER, $5::INTEGER)',
-  UPDATE_STATISTICS_DAILY_UV: 'UPDATE statistics_daily SET uv=$3, click=$4 WHERE donate_id=$1 AND date=$2',
-  GET_STATISTICS_DAILY: 'SELECT uv, click FROM statistics_daily WHERE donate_id=$1 AND date=$2'
+  UPDATE_STATISTICS_DAILY_UV: 'UPDATE statistics_daily SET uv=$3, click=$4, site_uv=$5 WHERE donate_id=$1 AND date=$2',
+  GET_STATISTICS_DAILY: 'SELECT uv, click, site_uv FROM statistics_daily WHERE donate_id=$1 AND date=$2'
 };
 
