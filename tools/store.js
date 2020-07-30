@@ -86,12 +86,12 @@ class Store extends DB {
   }
 
   async _updateAssetsPrice() {
-    let asset_list = await APIS.getAsset()
+    let asset_list = await APIS.mixinClient.query_assets({})
     if (!asset_list) return
     for (let i = 0; i < ASSETS.length; i++) {
       let asset_id = ASSETS[i]
       let asset_item = asset_list.find(item => item.asset_id === asset_id)
-      if (!asset_item) asset_item = await APIS.getAsset(asset_id)
+      if (!asset_item) asset_item = await APIS.mixinClient.query_assets({ asset_id })
       let { price_usd } = asset_item
       this.price_list[i] = price_usd
     }
@@ -105,7 +105,7 @@ class Store extends DB {
   }
 
   async _updateFiats() {
-    let fiat_list = await APIS.getFiats()
+    let fiat_list = await APIS.mixinClient.query_fiats()
     if (!fiat_list) return
     let tmpObj = {}
     for (let i = 0; i < fiat_list.length; i++) {

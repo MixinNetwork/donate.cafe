@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const model = require('./model')
+const formidableMiddleware = require('express-formidable')
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true)
@@ -11,7 +12,7 @@ app.use((req, res, next) => {
   if (req.method == 'OPTIONS') {
     res.sendStatus(200)
   } else next()
-});
+})
 
 
 app.use(bodyParser.json({
@@ -29,10 +30,12 @@ app.get('/api/login', async (req, res) => {
   }
 })
 
-app.post('/api/authenticate', async (req, res) => {
-  let { code, file, amount, currency } = req.body
+app.post('/api/authenticate', formidableMiddleware(), async (req, res) => {
   try {
-    let data = await model.init_user_by_code(code, file, amount, currency)
+    let { file } = req.files
+    let path = file && file.path
+    let { code, amount, currency } = req.fields
+    let data = await model.init_user_by_code(code, path, amount, currency)
     return res.json(data)
   } catch (e) {
     console.error('/authenticate', e)
@@ -49,12 +52,14 @@ app.get('/api/getFiats', async (req, res) => {
   }
 })
 
-app.post('/api/saveDonate', async (req, res) => {
-  let { file, amount, currency } = req.body
+app.post('/api/saveDonate', formidableMiddleware(), async (req, res) => {
   try {
     if (!req.headers.authorization) return res.json({ error: 'auth' })
     let access_token = req.headers.authorization.split(' ')[1]
-    let data = await model.save_donate(access_token, file, amount, currency)
+    let { file } = req.files
+    let path = file && file.path
+    let { amount, currency } = req.fields
+    let data = await model.save_donate(access_token, path, amount, currency)
     return res.json(data)
   } catch (e) {
     console.error('/saveDonate', e)

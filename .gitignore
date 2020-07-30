@@ -4,3 +4,4 @@ config/config*
 mock
 .DS_Store
 *.sh
+.env.*

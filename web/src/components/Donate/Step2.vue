@@ -120,14 +120,6 @@ export default {
   }
 };
 
-function _getUUID() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-
 function resetAsset(item, index) {
   this.active_index = index;
   let { donate_info, active_amount } = this;
@@ -142,7 +134,7 @@ function resetAsset(item, index) {
   let random_amount = (Math.random() * 100) | 0;
   _amount += random_amount;
   this.active_amount_token = _amount + " " + symbol;
-  let trace_id = _getUUID();
+  let trace_id = tools.getUUID();
   let label = encodeURIComponent(active_amount.label);
   if (label.length > 140)
     label = encodeURIComponent(active_amount.label.substr(0, 40));

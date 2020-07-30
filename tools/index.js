@@ -16,39 +16,6 @@ class Tools {
     return build + '-node-' + process.version
   }
 
-  _getUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      const r = (Math.random() * 16) | 0;
-      const v = c === 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
-  }
-
-  getJwtToken(method, uri, body) {
-    uri = uri.replace('https://api.mixin.one', '')
-    method = method.toLocaleUpperCase();
-    if (typeof (body) === "object") {
-      body = JSON.stringify(body);
-    }
-    let issuedAt = Math.floor(Date.now() / 1000)
-    let md = forge.md.sha256.create();
-    md.update(method + uri + body);
-    let payload = {
-      uid: uid,
-      sid: sid,
-      iat: issuedAt,
-      exp: issuedAt + 3600,
-      jti: this._getUUID(),
-      sig: md.digest().toHex(),
-      scp: 'FULL'
-    };
-    return jwt.sign(payload, privateKey, { algorithm: 'RS512' });
-  }
-
-  dataURLtoFile(dataurl) {
-    return Buffer.from(dataurl.split(',')[1], 'base64');
-  }
-
   async getAddress(token) {
     if (!APIS || JSON.stringify(APIS) === '{}') APIS = require('../api')
     let addressListOrigin = await APIS.getAddress(token)

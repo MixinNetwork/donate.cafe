@@ -14,7 +14,7 @@ request.interceptors.response.use(res => {
   if (res.data) {
     let { data, error } = res.data
     if (error) {
-      _vm.$message(_vm.$t('error.' + error));
+      _vm.$message(_vm.$t('error.' + error))
       if (error === 'auth') {
         _vm.$ls.set('token', '')
         _vm.$ls.set('avatar_url', '')
@@ -22,7 +22,7 @@ request.interceptors.response.use(res => {
         window.sessionStorage.clear()
         setTimeout(() => {
           window.location.reload()
-        }, 200);
+        }, 200)
       }
       return error
     }
@@ -42,7 +42,7 @@ function backOff() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve()
-    }, 500);
+    }, 500)
   })
 }
 
@@ -64,54 +64,76 @@ export default {
     return await request.get('/getFiats')
   },
   async getDonate(name, is_mixin) {
+    let { get, set } = _vm.$ls
     name = name.toLowerCase()
-    let params = { name, code: _vm.$ls.get(name), is_mixin }
+    let params = { name, code: get(name), is_mixin }
     let t = await request.post('/getDonate', params)
     if (!t || !t.date) return false
-    _vm.$ls.set(t.name, t.date)
+    set(t.name, t.date)
     return t
   },
   async login(code) {
     return await request.get('/login?code=' + code)
   },
   async saveDonate() {
+    let { get, set } = _vm.$ls
     isSaved = false
-    let file
-    if (_vm.$ls.get('file_change') === 1) {
-      let button = _vm.$ls.get('button')
-      if (button === 'default') {
-        file = 'default'
-      } else if (button === 'user') {
-        file = _vm.$ls.get('file')
-      }
-    } else {
-      file = ''
-    }
-    let amount = _vm.$ls.get('amount')
-    let currency = _vm.$ls.get('currency')
-    let params = file ? { file, amount, currency } : { amount, currency }
-    let res = await request.post('/saveDonate', params)
+    let file = ''
+    if (get('file_change') === 1 && get('button') === 'user')
+      file = get('file')
+    let amount = get('amount')
+    let currency = get('currency')
+    let formData = getFormData({ file, amount, currency })
+    let res = await request.post('/saveDonate', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     if (res && res.donate_id) {
-      _vm.$ls.set('donate_id', res.donate_id)
-      _vm.$ls.set('file_change', '0')
+      set('donate_id', res.donate_id)
+      set('file_change', '0')
     }
     isSaved = true
   },
   async authAndUpload(code) {
-    let file = _vm.$ls.get('button') === 'user' && _vm.$ls.get('file')
-    let amount = _vm.$ls.get('amount')
-    let currency = _vm.$ls.get('currency')
-    return await request.post('/authenticate', { code, file, amount, currency })
+    let { get } = _vm.$ls
+    let file = get('button') === 'user' && get('file')
+    let amount = get('amount')
+    let currency = get('currency')
+    let formData = getFormData({ file, amount, currency, code })
+    return await request.post('/authenticate', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
   },
   async setUsername(name) {
     while (!isSaved) {
       await backOff()
     }
     isSaved = false
-    let donate_id = _vm.$ls.get('donate_id')
+    let donate_id = get('donate_id')
     let params = { name, donate_id }
     let data = await request.post('/setUser', params)
     isSaved = true
     return data
   }
+}
+
+function getFormData(obj) {
+  let formData = new FormData()
+  for (const key in obj) {
+    let value = obj[key]
+    if (key === 'file') {
+      value && formData.append('file', dataURLtoBlob(value))
+    } else {
+      if (typeof value === 'object') value = JSON.stringify(value)
+      formData.append(key, value)
+    }
+  }
+  return formData
+}
+
+function dataURLtoBlob(dataurl) {
+  let arr = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bStr = atob(arr[1]),
+    n = bStr.length,
+    u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bStr.charCodeAt(n)
+  }
+  return new Blob([u8arr], { type: mime })
 }

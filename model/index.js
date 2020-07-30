@@ -3,9 +3,10 @@ const APIS = require('../api')
 const tools = require('../tools')
 const Store = require('../tools/store')
 const { ASSET_EXTRA_DATA, ASSETS, CURRENCY, DEFAULT_VIEW_URL, RESERVED_WORD } = require('../tools/const')
-const { uploadQueue } = require('../tools/queue')
 const ADD = 0
 const EDIT = 1
+
+const fs = require('fs').promises
 
 class Model extends Store {
   constructor() {
@@ -13,7 +14,7 @@ class Model extends Store {
   }
 
   async login(code) {
-    let authenRes = await APIS.authenticate(code)
+    let authenRes = await APIS.mixinClient.authenticate({ code })
     if (!authenRes || [401, 403].includes(authenRes.code)) return { error: 'auth' }
     let { access_token } = authenRes
     let user = await APIS.getMe(access_token)
@@ -27,9 +28,10 @@ class Model extends Store {
     return { data: { user_id, access_token, avatar_url, addresses, donate_info } }
   }
 
-  async save_donate(access_token, file, amount_info, currency, addresses) {
+  async save_donate(access_token, path, amount_info, currency, addresses) {
+    if (typeof amount_info === 'string') amount_info = JSON.parse(amount_info)
     let user = await this.get_user_by_token(access_token)
-    if (!user) return { error: 'auth' }
+    if (!user) return { error: `auth` }
     if (!addresses) {
       addresses = await tools.getAddress(access_token)
       if (!addresses) return { error: 'asset' }
@@ -39,34 +41,32 @@ class Model extends Store {
     let action = EDIT
     if (!donate_id) {
       while (true) {
-        donate_id = tools._getUUID()
+        donate_id = APIS.mixinClient.getUUID()
         if (!(await this.get_donate(donate_id))) break
       }
       action = ADD
     }
-    const self = this
-    uploadQueue.push(donate_id, t)
-    async function t() {
-      let view_url
-      if (file && file.startsWith('data:image/')) {
-        view_url = await APIS.uploadFileToUrl(file)
-      } else if (file === 'default') {
-        view_url = DEFAULT_VIEW_URL
-      } else {
-        view_url = ''
-      }
-      if (!currency || currency.length !== 3) currency = 'USD'
-      await self.add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses })
+    const file = path ? await fs.readFile(path) : 'default'
+    let view_url
+    if (file === 'default') {
+      view_url = DEFAULT_VIEW_URL
+    } else {
+      fs.unlink(path)
+      let t = await APIS.mixinClient.upload_file({ file })
+      view_url = t.view_url
     }
+    if (!currency || currency.length !== 3) currency = 'USD'
+    console.log(view_url)
+    await this.add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses })
     return { data: { donate_id } }
   }
 
 
-  async init_user_by_code(code, file, amount_info, currency) {
+  async init_user_by_code(code, path, amount_info, currency) {
     let { data: user_data, error: user_error } = await this.login(code)
     if (user_error) return { error: user_error }
     let { access_token, avatar_url, addresses } = user_data
-    let { data: donate_data, error: donate_error } = await this.save_donate(access_token, file, amount_info, currency, addresses)
+    let { data: donate_data, error: donate_error } = await this.save_donate(access_token, path, amount_info, currency, addresses)
     if (donate_error) return { error: donate_error }
     let { donate_id } = donate_data
     return { data: { access_token, donate_id, avatar_url } }
@@ -77,19 +77,15 @@ class Model extends Store {
     name = name.toLowerCase()
     if (RESERVED_WORD[name]) return res.json({ error: 'name_repeat' })
     if (name.length < 5) return res.json({ error: 'name_length' })
-    const self = this
-    uploadQueue.push(donate_id, t)
-    async function t() {
-      let user = await self.get_user_by_token(access_token)
-      if (!user) return res.json({ error: 'auth' })
-      let { view_url } = await self.get_donate(donate_id)
-      view_url = view_url || DEFAULT_VIEW_URL
-      try {
-        await self.update_donate_name(donate_id, name)
-        return res.json({ data: { view_url } })
-      } catch (e) {
-        return res.json({ error: e.message.startsWith('duplicate key value violates unique constraint') ? 'name_repeat' : 'server' })
-      }
+    let user = await this.get_user_by_token(access_token)
+    if (!user) return res.json({ error: 'auth' })
+    let { view_url } = await this.get_donate(donate_id)
+    view_url = view_url || DEFAULT_VIEW_URL
+    try {
+      await this.update_donate_name(donate_id, name)
+      return res.json({ data: { view_url } })
+    } catch (e) {
+      return res.json({ error: e.message.startsWith('duplicate key value violates unique constraint') ? 'name_repeat' : 'server' })
     }
   }
 
@@ -120,7 +116,7 @@ class Model extends Store {
     amount_info = amount_info || {}
     switch (action) {
       case ADD:
-        return await this.add_donate({ donate_id, user_id, view_url, currency, amount_info, addresses });
+        return await this.add_donate({ donate_id, user_id, view_url, currency, amount_info, addresses })
       case EDIT:
         await this.update_donate({ donate_id, view_url, currency, amount_info, addresses })
         this.cache_donate_list[donate_id] && (this.cache_donate_list[donate_id].updated = true)
