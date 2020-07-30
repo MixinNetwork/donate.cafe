@@ -6,7 +6,7 @@ class APIS {
   }
 
   async getMe(token) {
-    let { user_id, avatar_url, full_name, identity_number } = await mixinAjax(token, '/me')
+    let { user_id, avatar_url, full_name, identity_number } = await mixinAjax.get(token, '/me')
     return { user_id, avatar_url, full_name, identity_number }
   }
 

@@ -100,6 +100,7 @@ export default {
     return await request.post('/authenticate', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
   },
   async setUsername(name) {
+    let { get } = _vm.$ls
     while (!isSaved) {
       await backOff()
     }
