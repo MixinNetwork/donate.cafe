@@ -56,7 +56,6 @@ class Model extends Store {
       view_url = t.view_url
     }
     if (!currency || currency.length !== 3) currency = 'USD'
-    console.log(view_url)
     await this.add_or_update_donate(action, { user_id, donate_id, view_url, currency, amount_info, addresses })
     return { data: { donate_id } }
   }
