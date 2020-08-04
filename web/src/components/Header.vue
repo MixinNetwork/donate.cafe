@@ -75,7 +75,7 @@ export default {
     this.isHome = this.$route.name === "home";
     this.avatar_url = this.$ls.get("avatar_url");
     this.token = this.$ls.get("token");
-    this.url = `https://mixin-www.zeromesh.net/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=SNAPSHOTS:READ+PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
+    this.url = `https://mixin-www.zeromesh.net/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=SNAPSHOTS:READ+PROFILE:READ+ASSETS:READ&response_type=code&state=login`;
   }
 };
 </script>

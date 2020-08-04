@@ -11,7 +11,7 @@ export default {
   name: "Step3",
   methods: {
     click_to_auth() {
-      window.location.href = `https://mixin-www.zeromesh.net/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=SNAPSHOTS:READ+PROFILE:READ+ASSETS:READ&response_type=code`;
+      window.location.href = `https://mixin-www.zeromesh.net/oauth/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&scope=SNAPSHOTS:READ+PROFILE:READ+ASSETS:READ&response_type=code`;
     }
   },
   mounted() {
