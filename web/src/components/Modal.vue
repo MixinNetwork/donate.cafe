@@ -78,6 +78,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100vh;
+  z-index: 10;
 
   .mask {
     width: 100%;
@@ -217,7 +218,7 @@ export default {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: 10;
+    
 
     .mask {
       width: 100%;
