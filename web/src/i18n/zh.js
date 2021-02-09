@@ -25,8 +25,8 @@ export default {
       }
     },
     step: {
-      title: ["", "选择按钮样式", "设置金额", "绑定收款钱包", "设置用户名", "你的打赏 HTML"],
-      number: "第 {number} / 5 步",
+      title: ["", "选择按钮样式", "设置金额", "绑定收款钱包", "设置用户名", "绑定其他钱包", "你的打赏 HTML"],
+      number: "第 {number} / 6 步",
       '1default': "默认按钮样式",
       "1notice": "上传图片不得大于 3M",
       "1user": "用户自己的按钮图片",
@@ -37,10 +37,13 @@ export default {
       "3info": " 打赏按钮需要绑定您的 Mixin Messenger，以接受打赏并向粉丝显示您的头像和姓名。",
       "3button": "连接到 Mixin Messenger",
       "3noMessenger": "还没有 Mixin Messenger ?",
-      '4prefix': '你的打赏链接: ',
-      "5copy": "复制代码",
-      "5select": ["JS 样式", "图片链接", "文本链接"],
-      "5success": "复制成功",
+      "5wechat": "微信",
+      "5wechatDesc": "微信收款码",
+      "5alipay": "支付宝",
+      "5alipayDesc": "支付宝收款码",
+      "6copy": "复制代码",
+      "6select": ["JS 样式", "图片链接", "文本链接"],
+      "6success": "复制成功",
       next: "下一步"
     }
   },

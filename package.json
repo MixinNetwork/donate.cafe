@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "express-formidable": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mixin-node-sdk": "^1.3.2",
+    "mixin-node-sdk": "^2.0.3",
     "node-forge": "^0.10.0",
     "pg": "^8.2.1"
   }

@@ -25,8 +25,8 @@ export default {
       }
     },
     step: {
-      title: ["", "Choose Button Style", "Set Amount", "Connect Wallet", "Set Username", "Your Donate Html"],
-      number: "Step {number} of 5",
+      title: ["", "Choose Button Style", "Set Amount", "Connect Wallet", "Set Username", "Bind Other Wallets", "Your Donate Html"],
+      number: "Step {number} of 6",
       '1default': "Default button style",
       "1notice": "The file must not be larger than 3M",
       "1user": "User your own button image",
@@ -37,9 +37,13 @@ export default {
       "3info": " Donate Button needs to connect your Mixin Messenger to accept donations and display your avatar and name to your fans. ",
       "3button": "Connect",
       "3noMessenger": "No Mixin Messenger yet?",
-      "5copy": "Copy Code",
-      "5select": ["JS Style", "Image & Link", "Text & Link"],
-      "5success": "Copy Success",
+      "5wechat": "WeChat",
+      "5wechatDesc": "Your wechat receive money qr code",
+      "5alipayDesc": "Your alipay receive money qr code",
+      "5alipay": "Alipay",
+      "6copy": "Copy Code",
+      "6select": ["JS Style", "Image & Link", "Text & Link"],
+      "6success": "Copy Success",
       next: "Next"
     }
   },

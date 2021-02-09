@@ -12,7 +12,8 @@
         <Step2 v-if="active_step === 2" @nextStep="nextStep" />
         <Step3 v-if="active_step === 3" @nextStep="nextStep" />
         <Step4 v-if="active_step === 4" @nextStep="nextStep" />
-        <Step5 v-if="active_step === 5" />
+        <Step5 v-if="active_step === 5" @nextStep="nextStep" />
+        <Step5 v-if="active_step === 6" />
       </div>
     </div>
   </div>
@@ -24,9 +25,10 @@ import Step2 from "@/components/Generate/Step2";
 import Step3 from "@/components/Generate/Step3";
 import Step4 from "@/components/Generate/Step4";
 import Step5 from "@/components/Generate/Step5";
+import Step6 from "@/components/Generate/Step6";
 export default {
   name: "Modal",
-  components: { Step1, Step2, Step3, Step4, Step5 },
+  components: { Step1, Step2, Step3, Step4, Step5, Step6 },
   props: {
     show_modal: {
       type: Boolean,
@@ -66,7 +68,7 @@ export default {
   },
   mounted() {
     let step4 = window.sessionStorage.getItem("step4");
-    if (step4) this.active_step = 4;
+    if (step4) this.active_step = 5;
   }
 };
 </script>

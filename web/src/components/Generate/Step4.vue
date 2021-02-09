@@ -1,8 +1,20 @@
 <template>
   <div class="step4">
-    <input type="text" placeholder="username" @input="prefix_input" v-model="name" />
-    <p v-html="url"></p>
-    <button :class="name.length<5 && 'not-allow'" @click="click_next">
+    <!-- <input type="text" placeholder="username" @input="prefix_input" v-model="name" />
+    <p v-html="url"></p> -->
+    <p class="title">What do you want your link to be ?</p>
+    <div class="url-container">
+      <span>donate.cafe/</span>
+      <input
+        type="text"
+        placeholder="Username"
+        @input="prefix_input"
+        v-model="name"
+      />
+    </div>
+    <p class="tips">Min 5 characters (a-z, 0-9).</p>
+
+    <button :class="name.length < 5 && 'not-allow'" @click="click_next">
       <template v-if="!once_click">Next</template>
       <div v-else class="showbox">
         <div class="loader">
@@ -30,18 +42,18 @@ export default {
     return {
       name: "",
       host: process.env.VUE_APP_CLIENT + "/",
-      once_click: false
+      once_click: false,
     };
   },
-  computed: {
-    url() {
-      let { name } = this;
-      name = name
-        ? `<i>${this.name}</i>`
-        : `<i class="placeholder">username</i>`;
-      return `${process.env.VUE_APP_CLIENT}/${name}`;
-    }
-  },
+  // computed: {
+  //   url() {
+  //     let { name } = this;
+  //     name = name
+  //       ? `<i>${this.name}</i>`
+  //       : `<i class="placeholder">username</i>`;
+  //     return `${process.env.VUE_APP_CLIENT}/${name}`;
+  //   },
+  // },
   methods: {
     prefix_input(e) {
       let value = e.target.value.replace(/[^(a-zA-Z0-9\_\-)]/g, "");
@@ -63,12 +75,12 @@ export default {
       this.$ls.set("view_url", view_url);
       this.$ls.set("name", this.name);
       this.$emit("nextStep");
-    }
+    },
   },
   mounted() {
     let name = this.$ls.get("name");
     if (name) this.name = name;
-  }
+  },
 };
 </script>
 
@@ -80,12 +92,31 @@ export default {
   align-items: center;
 }
 
-input {
-  width: calc(100% - 260px);
-  margin-top: 108px;
+p.title {
+  margin-top: 60px;
+}
 
-  text-align: center;
-  line-height: 54px;
+.url-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+  padding: 0 130px;
+  box-sizing: border-box;
+  span {
+    background-color: #f2f2f8;
+    line-height: 54px;
+    padding: 0 10px 0 20px;
+    border-radius: 8px 0 0 8px;
+  }
+}
+
+input {
+  flex: 1;
+  width: calc(100% - 260px);
+
+  height: 54px;
+  padding: 0 10px;
 
   font-family: Nunito;
   font-weight: normal;
@@ -93,11 +124,15 @@ input {
   color: #4c4471;
 
   background: #f8f9fb;
-  border-radius: 8px;
+  border-radius: 0 8px 8px 0;
 
   &::placeholder {
     color: #bbbec3;
   }
+}
+
+.tips {
+  color: #bbbec3;
 }
 
 /deep/ {
@@ -200,27 +235,26 @@ button {
     text-align: center;
   }
 
-  input {
-    width: calc(100% - 20px);
+  // input {
+  //   width: calc(100% - 20px);
+  // }
+
+  .url-container {
+    padding: 0px;
   }
 
   p {
     padding: 0 20px;
-    word-break: break-all;
+    // word-break: break-all;
   }
 
   button {
     margin-top: 100px;
   }
 
-  @media screen and(min-height: 800px) {
+  @media screen and(min-height: 500px) {
     button {
-      margin-top: 200px;
-    }
-  }
-  @media screen and(min-height: 700px) {
-    button {
-      margin-top: 180px;
+      margin-top: 80px;
     }
   }
   @media screen and(min-height: 600px) {
@@ -228,9 +262,14 @@ button {
       margin-top: 140px;
     }
   }
-  @media screen and(min-height: 500px) {
+  @media screen and(min-height: 700px) {
     button {
-      margin-top: 80px;
+      margin-top: 180px;
+    }
+  }
+  @media screen and(min-height: 800px) {
+    button {
+      margin-top: 200px;
     }
   }
 }
