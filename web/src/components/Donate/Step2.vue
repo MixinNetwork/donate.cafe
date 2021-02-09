@@ -240,7 +240,7 @@ function success() {
   margin: 0;
   width: 160px;
   max-height: 320px;
-  z-index: 9999;
+  z-index: 1;
 
   background: #ffffff;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
