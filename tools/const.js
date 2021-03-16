@@ -8,6 +8,7 @@ exports.ASSETS = [
   'f5ef6b5d-cc5a-3d90-b2c0-a2fd386e7a3c', // BOX
 
   '43d61dcd-e413-450d-80b8-101d5e903357', // ETH
+  'eea900a8-b327-488c-8d8d-1428702fe240', // MOB
   '05c5ac01-31f9-4a69-aa8a-ab796de1d041', // XMR
   'fd11b6e3-0b87-41f1-a41f-f0e9b49e5bf0', // BCH
   '574388fd-b93f-4034-a682-01c2bc095d17', // BSV
@@ -28,6 +29,7 @@ exports.ASSET_EXTRA_DATA = [
   { symbol: 'BOX', prefix: 'ethereum', icon_url: 'https://mixin-images.zeromesh.net/ml7tg1ZGrQt6IJSvEusWFfthosOB98GWN7r4EkmgSP8tbJHxK7OWki9zfZFFDCDOJE0nlLBR6dc4nbUguXE3Bg4=s128' },
 
   { symbol: 'ETH', prefix: 'ethereum', icon_url: 'https://mixin-images.zeromesh.net/zVDjOxNTQvVsA8h2B4ZVxuHoCF3DJszufYKWpd9duXUSbSapoZadC7_13cnWBqg0EmwmRcKGbJaUpA8wFfpgZA=s128' },
+  { symbol: 'MOB', prefix: 'mobilecoin', icon_url: 'https://mixin-images.zeromesh.net/JtSsCbZUzBpdDEI6JbLZ1-ZdAWUakaLBSpAp25gu0uHKoHC3kAeDTXZhsgMEOk_i3nFSAKI4QqFTEEPqv31QFD-hDQHpGA2zoG_A=s128' },
   { symbol: 'XMR', prefix: 'monero', icon_url: 'https://mixin-images.zeromesh.net/vffCzX0PPO1f1D0sRFCkpJuSRYbxEM5u-hl4FMoUeWk8g899U5eyVKnFENiEJ4AXU0s-62mx1nBR3c_pHFROuw=s128' },
   { symbol: 'BCH', prefix: 'bitcoincash', icon_url: 'https://mixin-images.zeromesh.net/tqt14x8iwkiCR_vIKIw6gAAVO8XpZH7ku7ZJYB5ArMRA6grN9M1oCI7kKt2QqBODJwr17sZxDCDTjXHOgIixzv6X=s128' },
   { symbol: 'BSV', prefix: 'bitcoinsv', icon_url: 'https://mixin-images.zeromesh.net/1iUl5doLjMSv-ElcVCI4YgD1uIayDbZcQP0WjFEajoY1-qQZmVEl5GgUCtsp8CP0aj96a5Rwi-weQ5YA64lyQzU=s128' },
