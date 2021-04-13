@@ -32,6 +32,10 @@ class DB {
     return (await this.query(this.SQL.GET_USER_BY_TOKEN, [access_token]))[0]
   }
 
+  async get_user_by_id(user_id) {
+    return (await this.query(this.SQL.GET_USER_BY_ID, [user_id]))[0]
+  }
+
   // donate
   async add_donate({ donate_id, user_id, view_url, currency, amount_info, addresses }) {
     return await this.query(this.SQL.ADD_DONATE, [donate_id, user_id, view_url, currency, JSON.stringify(amount_info), JSON.stringify(addresses)])
@@ -41,6 +45,10 @@ class DB {
     return view_url ?
       await this.query(this.SQL.UPDATE_DONATE, [donate_id, view_url, currency, JSON.stringify(amount_info), JSON.stringify(addresses)]) :
       await this.query(this.SQL.UPDATE_DONATE_WITHOUT_VIEW_URL, [donate_id, currency, JSON.stringify(amount_info), JSON.stringify(addresses)])
+  }
+
+  update_donate_address_list(donate_id, addresses) {
+    return this.query(this.SQL.UPDATE_DONATE_ADDRESS, [donate_id, JSON.stringify(addresses)])
   }
 
   async update_donate_name(donate_id, name) {

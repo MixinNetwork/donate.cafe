@@ -36,7 +36,7 @@ class Tools {
     let data = await APIS.getAddress(token, asset_id)
     if (data.destination) return data
     await this.waitTwoSecond()
-    await this.getAddressUtilExist(token, asset_id)
+    return this.getAddressUtilExist(token, asset_id)
   }
 
   waitTwoSecond() {

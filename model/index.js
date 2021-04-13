@@ -88,11 +88,21 @@ class Model extends Store {
     }
   }
 
+  async reload_donate_address(donate_id, user_id) {
+    const { access_token } = await this.get_user_by_id(user_id)
+    const addresses = await tools.getAddress(access_token)
+    this.update_donate_address_list(donate_id, addresses)
+    return addresses
+  }
+
   async get_donate_info({ name, id, url, code, is_mixin }) {
     let donate_info = name ? await this.getDonateByName(name.toLowerCase()) : await this.getDonate(id)
     if (!donate_info) return false
     let tmpObj = {}
     Object.assign(tmpObj, donate_info)
+    if (tmpObj.addresses.length !== ASSETS.length) {
+      tmpObj.addresses = await this.reload_donate_address(donate_info.donate_id, donate_info.user_id)
+    }
     tmpObj.addresses = tmpObj.addresses.map((item, i) => (
       { destination: item, price: this.price_list[i], asset_id: ASSETS[i], ...ASSET_EXTRA_DATA[i] }
     ))
